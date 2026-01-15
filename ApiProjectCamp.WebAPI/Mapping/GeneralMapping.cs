@@ -20,11 +20,13 @@ namespace ApiProjectCamp.WebAPI.Mapping
             CreateMap<Message, UpdateFeaturedTO>().ReverseMap();
             CreateMap<Message, GetByIdFeatureDto>().ReverseMap();
             //AutoMapper'deki ReverseMap() metodu, iki yönlü dönüşüm sağlar. Yani, bir nesneyi diğerine dönüştürdüğünüz gibi, tersini de otomatik olarak yapmanıza olanak tanır.
+
             
 
             CreateMap<Product, CreateProductDto>().ReverseMap();
             CreateMap<Product, ResultProductWithCategoryDto>().ForMember(x=>x.CategoryName,y=>y.MapFrom(z=>z.Category.CategoryName)).ReverseMap();
             //CategoryName'i Category tablosundan alır
+
         }
     }
 }
