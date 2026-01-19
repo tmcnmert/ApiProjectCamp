@@ -9,9 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<ApiContext>();//baðlantý cümlesi için
-
 builder.Services.AddScoped<IValidator<Product>,ProductValidator>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());//AutoMapper için
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
