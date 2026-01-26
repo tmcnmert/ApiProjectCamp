@@ -22,6 +22,7 @@ namespace ApiProjectCamp.WebAPI.Context
         public DbSet<Entities.Testimonial> Testimonials { get; set; }
         public DbSet<Entities.YummyEvent> YummyEvents { get; set; }
         public DbSet<Entities.Notification> Notifications { get; set; }
+        public DbSet<Entities.About> Abouts { get; set; }
 
 
 

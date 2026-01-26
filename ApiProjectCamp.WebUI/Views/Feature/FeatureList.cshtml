@@ -1,9 +1,12 @@
-﻿@model List<ResultCategoryDto>
+﻿@model List<ResultFeatureDto>
 @{
-    ViewData["Title"] = "CategoryList";
+    ViewData["Title"] = "FeatureList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
+
+
+
 
 
 <section class="section">
@@ -12,14 +15,16 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Kategori Listesi</h4>
-                    </div>  
+                        <h4>Öne Çıkan Alan İşlemleri</h4>
+                    </div>
                     <div class="card-body">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Kategori Adı</th>
+                                    <th scope="col">Başlık</th>
+                                    <th scope="col">Alt Başlık</th>
+                                    <th scope="col">Açıklama</th>
                                     <th scope="col">Güncelle</th>
                                     <th scope="col">Sil</th>
                                 </tr>
@@ -30,18 +35,29 @@
                                     count++;
                                     <tr>
                                         <th scope="row">@count</th>
-                                        <td>@item.CategoryName</td>
-                                        <td><a href="/Category/UpdateCategory/@item.CategoryId" class="btn btn-warning">Güncelle</a></td>
-                                        <td><a href="/Category/DeleteCategory/@item.CategoryId" class="btn btn-danger">Sil</a></td>
+                                        <td>@item.Title</td>
+                                        <td>@item.SubTitle</td>
+                                        <td>@item.Description</td>
+                                        <td><a href="/Feature/UpdateFeature/@item.FeatureId" class="btn btn-warning">Güncelle</a></td>
+                                        <td><a href="/Feature/DeleteFeature/@item.FeatureId" class="btn btn-danger">Sil</a></td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
-                        <a href="/Category/CreateCategory/" class="btn btn-info">Yeni Kategori Girişi</a>
+                        @if (Model.Count == 1)
+                        {
+                            <a href="#" class="btn btn-info" onclick="return false;">Öne Çıkan Mevcut</a>
+                        }
+                        else
+                        {
+                            <a href="/Feature/CreateFeature/" class="btn btn-info">Yeni Öne Çıkarın Girişi</a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
 
