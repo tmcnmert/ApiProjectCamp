@@ -20,6 +20,10 @@ namespace ApiProjectCamp.WebAPI.Context
         public DbSet<Entities.Reservation> Reservations { get; set; }
         public DbSet<Entities.Service> Services { get; set; }
         public DbSet<Entities.Testimonial> Testimonials { get; set; }
+        public DbSet<Entities.YummyEvent> YummyEvents { get; set; }
+        public DbSet<Entities.Notification> Notifications { get; set; }
+
+
 
 
 

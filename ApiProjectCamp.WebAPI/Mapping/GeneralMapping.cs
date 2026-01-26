@@ -1,7 +1,9 @@
 ﻿using ApiProjectCamp.WebAPI.Dtos.FeatureDtos;
+using ApiProjectCamp.WebAPI.Dtos.MessageDtos;
+using ApiProjectCamp.WebAPI.Dtos.NotificationDtos;
 using ApiProjectCamp.WebAPI.Dtos.ProductDtos;
 using ApiProjectCamp.WebAPI.Entities;
-using AutoMapper;
+using AutoMapper; 
 
 namespace ApiProjectCamp.WebAPI.Mapping
 {
@@ -15,17 +17,23 @@ namespace ApiProjectCamp.WebAPI.Mapping
             CreateMap<Feature, GetByIdFeatureDto>().ReverseMap();
 
 
-            CreateMap<Message, ResultFeatureDto>().ReverseMap();
-            CreateMap<Message, CreateFeatureDto>().ReverseMap();
-            CreateMap<Message, UpdateFeaturedTO>().ReverseMap();
-            CreateMap<Message, GetByIdFeatureDto>().ReverseMap();
+            CreateMap<Message, ResultMessageDto>().ReverseMap();
+            CreateMap<Message, CreateMessageDto>().ReverseMap();
+            CreateMap<Message, UpdateMessageDto>().ReverseMap();
+            CreateMap<Message, GetByIdMessageDto>().ReverseMap();
+
             //AutoMapper'deki ReverseMap() metodu, iki yönlü dönüşüm sağlar. Yani, bir nesneyi diğerine dönüştürdüğünüz gibi, tersini de otomatik olarak yapmanıza olanak tanır.
 
-            
+
 
             CreateMap<Product, CreateProductDto>().ReverseMap();
             CreateMap<Product, ResultProductWithCategoryDto>().ForMember(x=>x.CategoryName,y=>y.MapFrom(z=>z.Category.CategoryName)).ReverseMap();
             //CategoryName'i Category tablosundan alır
+
+            CreateMap<Notification,ResultNotificationDto>().ReverseMap();
+            CreateMap<Notification,CreateNotificationDto>().ReverseMap();
+            CreateMap<Notification, UpdateNotificationDto>().ReverseMap();
+            CreateMap<Notification, GetNotificationByIdDto>().ReverseMap();
 
         }
     }
