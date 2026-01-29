@@ -37,7 +37,7 @@
                                         <th scope="row">@item.Email</th>
                                         <td>@item.Subject</td>
                                         <td>@item.SendDate.ToString("dd-MMM-yyyy")</td>
-                                        <td><a href="/Message/UpdateMessage/@item.MessageId" class="btn btn-info">Mesajı Aç</a></td>
+                                        <td><a href="/Message/AnswerMessageWithOpenAI/@item.MessageId" class="btn btn-info">Mesajı Aç</a></td>
                                         <td><a href="/Message/UpdateMessage/@item.MessageId" class="btn btn-warning">Güncelle</a></td>
                                         <td><a href="/Message/DeleteMessage/@item.MessageId" class="btn btn-danger">Sil</a></td>
                                     </tr>

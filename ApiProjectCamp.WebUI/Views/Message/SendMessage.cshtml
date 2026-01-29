@@ -1,0 +1,29 @@
+﻿@model CreateMessageDto
+
+<form asp-action="SendMessage" asp-controller="Message" method="post">
+
+
+    <div class="row gy-4">
+
+        <div class="col-md-6">
+            <input asp-for="NameSurname" class="form-control" placeholder="Adınız Soyadınız" />
+        </div>
+
+        <div class="col-md-6">
+            <input asp-for="Email" type="email" class="form-control" placeholder="Email Adresiniz" />
+        </div>
+
+        <div class="col-md-12">
+            <input asp-for="Subject" class="form-control" placeholder="Konu" />
+        </div>
+
+        <div class="col-md-12">
+            <textarea asp-for="MessageDetails" class="form-control" rows="6" placeholder="Mesajınız"></textarea>
+        </div>
+
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary"> Mesajı Gönder</button>
+        </div>
+
+    </div>
+</form>
