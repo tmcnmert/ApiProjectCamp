@@ -57,5 +57,72 @@ namespace ApiProjectCamp.WebAPI.Controllers
             _context.SaveChanges();
             return Ok("Rezervasyon güncelleme işlemi başarılı");
         }
+
+        [HttpGet("GetTotalReservationCount")]
+        public IActionResult GetTotalReservationCount()
+        {
+            var value = _context.Reservations.Count();
+            return Ok(value);
+        }
+
+        [HttpGet("GetTotalCustomerCount")]
+        public IActionResult GetTotalCustomerCount()
+        {
+            var value = _context.Reservations.Sum(x => x.CountofPeople);
+            return Ok(value);
+        }
+
+        [HttpGet("GetPendingReservations")]
+        public IActionResult GetPendingReservations()
+        {
+            var value = _context.Reservations.Where(x => x.ReservationStatus == "Onay Bekliyor").Count();
+            return Ok(value);
+        }
+
+        [HttpGet("GetApprovedReservations")]
+        public IActionResult GetApprovedReservations()
+        {
+            var value = _context.Reservations.Where(x => x.ReservationStatus == "Onaylandı").Count();
+            return Ok(value);
+        }
+
+        [HttpGet("GetReservationStats")]
+        public IActionResult GetReservationStats()
+        {
+            // İçinde bulunulan ayın BAŞI
+            DateTime thisMonthStart = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+            // Son 4 TAM ay (devam eden ay HARİÇ)
+            DateTime startDate = thisMonthStart.AddMonths(-4);
+            DateTime endDate = thisMonthStart;
+
+            var rawData = _context.Reservations
+                .Where(r => r.ReservationDate >= startDate && r.ReservationDate < endDate)
+                .GroupBy(r => new { r.ReservationDate.Year, r.ReservationDate.Month })
+                .Select(g => new
+                {
+                    g.Key.Year,
+                    g.Key.Month,
+                    Approved = g.Count(x => x.ReservationStatus == "Onaylandı"),
+                    Pending = g.Count(x => x.ReservationStatus == "Onay Bekliyor"),
+                    Canceled = g.Count(x => x.ReservationStatus == "İptal Edildi")
+                })
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
+                .ToList();
+
+            var result = rawData.Select(x => new ReservationChartDto
+            {
+                Month = new DateTime(x.Year, x.Month, 1)
+                    .ToString("MMM yyyy", new System.Globalization.CultureInfo("tr-TR")),
+                Approved = x.Approved,
+                Pending = x.Pending,
+                Canceled = x.Canceled
+            }).ToList();
+
+            return Ok(result);
+        }
+
+
     }
 }
