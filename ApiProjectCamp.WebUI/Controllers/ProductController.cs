@@ -73,7 +73,7 @@ namespace ApiProjectCamp.WebUI.Controllers
         public async Task<IActionResult> UpdateProduct(int id)
         {
             var client = _httpClientFactory.CreateClient("api");
-            var responseMessage = await client.GetAsync($"/api/Products/GetProducts?id={id}");
+            var responseMessage = await client.GetAsync($"/api/Products/GetProduct?id={id}");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
             return View(value);
@@ -84,7 +84,7 @@ namespace ApiProjectCamp.WebUI.Controllers
             var client = _httpClientFactory.CreateClient("api");
             var jsonData = JsonConvert.SerializeObject(updateProductDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("/api/Products", stringContent);
+            var responseMessage = await client.PutAsync("/api/Products/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("ProductList");

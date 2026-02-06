@@ -138,6 +138,63 @@ namespace ApiProjectCamp.WebAPI.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.EmployeeTask", b =>
+                {
+                    b.Property<int>("EmployeeTaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeTaskId"), 1L, 1);
+
+                    b.Property<DateTime>("AssignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaskName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaskStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("TaskStatusValue")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("EmployeeTaskId");
+
+                    b.ToTable("EmployeeTasks");
+                });
+
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.EmployeeTaskChef", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ChefId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeTaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChefId");
+
+                    b.HasIndex("EmployeeTaskId");
+
+                    b.ToTable("EmployeeTaskChefs");
+                });
+
             modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.Feature", b =>
                 {
                     b.Property<int>("FeatureId")
@@ -169,6 +226,51 @@ namespace ApiProjectCamp.WebAPI.Migrations
                     b.HasKey("FeatureId");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.GroupReservation", b =>
+                {
+                    b.Property<int>("GroupReservationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupReservationId"), 1L, 1);
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastProcessDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PersonCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReservationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResponsibleCustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GroupReservationId");
+
+                    b.ToTable("GroupReservations");
                 });
 
             modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.Image", b =>
@@ -418,6 +520,25 @@ namespace ApiProjectCamp.WebAPI.Migrations
                     b.ToTable("YummyEvents");
                 });
 
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.EmployeeTaskChef", b =>
+                {
+                    b.HasOne("ApiProjectCamp.WebAPI.Entities.Chef", "Chef")
+                        .WithMany("EmployeeTaskChefs")
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiProjectCamp.WebAPI.Entities.EmployeeTask", "EmployeeTask")
+                        .WithMany("EmployeeTaskChefs")
+                        .HasForeignKey("EmployeeTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chef");
+
+                    b.Navigation("EmployeeTask");
+                });
+
             modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.Product", b =>
                 {
                     b.HasOne("ApiProjectCamp.WebAPI.Entities.Category", "Category")
@@ -430,6 +551,16 @@ namespace ApiProjectCamp.WebAPI.Migrations
             modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.Chef", b =>
+                {
+                    b.Navigation("EmployeeTaskChefs");
+                });
+
+            modelBuilder.Entity("ApiProjectCamp.WebAPI.Entities.EmployeeTask", b =>
+                {
+                    b.Navigation("EmployeeTaskChefs");
                 });
 #pragma warning restore 612, 618
         }

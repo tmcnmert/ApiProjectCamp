@@ -1,6 +1,7 @@
 ﻿using ApiProjectCamp.WebAPI.Dtos.AboutDtos;
 using ApiProjectCamp.WebAPI.Dtos.CategoryDtos;
 using ApiProjectCamp.WebAPI.Dtos.FeatureDtos;
+using ApiProjectCamp.WebAPI.Dtos.GroupReservationDtos;
 using ApiProjectCamp.WebAPI.Dtos.ImageDtos;
 using ApiProjectCamp.WebAPI.Dtos.MessageDtos;
 using ApiProjectCamp.WebAPI.Dtos.NotificationDtos;
@@ -31,7 +32,11 @@ namespace ApiProjectCamp.WebAPI.Mapping
 
 
             CreateMap<Product, CreateProductDto>().ReverseMap();
+            CreateMap<Product, GetProductByIdDto>().ReverseMap();
+            CreateMap<Product, UpdateProductDto>().ReverseMap();
             CreateMap<Product, ResultProductWithCategoryDto>().ForMember(x=>x.CategoryName,y=>y.MapFrom(z=>z.Category.CategoryName)).ReverseMap();
+
+
             //CategoryName'i Category tablosundan alır
 
             CreateMap<Notification,ResultNotificationDto>().ReverseMap();
@@ -59,6 +64,11 @@ namespace ApiProjectCamp.WebAPI.Mapping
             CreateMap<Image,CreateImageDto>().ReverseMap();
             CreateMap<Image,UpdateImageDto>().ReverseMap();
             CreateMap<Image,GetImageByIdDto>().ReverseMap();
+
+            CreateMap<GroupReservation, ResultGroupReservationDto>().ReverseMap();
+            CreateMap<GroupReservation, CreateGroupReservationDto>().ReverseMap();
+            CreateMap<GroupReservation, UpdateGroupReservationDto>().ReverseMap();
+            CreateMap<GroupReservation, GetGroupReservationByIdDto>().ReverseMap();
 
 
         }

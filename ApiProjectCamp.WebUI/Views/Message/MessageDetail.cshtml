@@ -1,0 +1,475 @@
+﻿@model GetMessageByIdDto
+@{
+    ViewData["Title"] = "MessageDetail";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .detail-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .detail-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .detail-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        padding-top: 1rem; /* Üst padding azaltıldı */
+        position: relative;
+    }
+
+        .detail-header.toxic {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+    .back-button {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem; /* Alt margin eklendi */
+    }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+    .header-title-section {
+        margin-top: 0.5rem; /* Başlık için üst boşluk */
+    }
+
+        .header-title-section h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+
+            .header-title-section h2 i {
+                margin-right: 0.5rem;
+            }
+
+        .header-title-section p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+    .status-badge-large {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        margin-top: 1rem;
+    }
+
+    .message-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+        background: #f8f9ff;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .meta-label {
+        font-size: 0.75rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .meta-value {
+        font-size: 1rem;
+        color: #333;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        word-break: break-word; /* Uzun metinleri kır */
+    }
+
+        .meta-value i {
+            color: #667eea;
+            flex-shrink: 0; /* İkon küçülmesin */
+        }
+
+    .message-content-section {
+        padding: 2rem;
+    }
+
+    .content-title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .content-title i {
+            color: #667eea;
+        }
+
+    .message-text {
+        background: #f8f9ff;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+        color: #555;
+        line-height: 1.8;
+        font-size: 1rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word; /* Uzun kelimeleri kır */
+    }
+
+    .toxic-warning {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+        border: 2px solid #f5576c;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .toxic-warning i {
+            font-size: 2rem;
+            color: #f5576c;
+            flex-shrink: 0;
+        }
+
+        .toxic-warning .warning-content h4 {
+            color: #f5576c;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .toxic-warning .warning-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        padding: 2rem;
+        background: #f8f9ff;
+        border-top: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        flex: 1;
+        min-width: 150px; /* Minimum genişlik azaltıldı */
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn i {
+            flex-shrink: 0;
+        }
+
+    .btn-reply {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+    }
+
+    .btn-mark-read {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-archive {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        color: #8b4513;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .reply-section {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .reply-header {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-bottom: 1.5rem;
+        color: #667eea;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .reply-textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        resize: vertical;
+        transition: all 0.3s ease;
+    }
+
+        .reply-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+    .send-reply-btn {
+        margin-top: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+        .send-reply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+    @@media (max-width: 768px) {
+        .detail-header
+
+    {
+        padding: 1.5rem;
+    }
+
+    .header-title-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .message-meta {
+        grid-template-columns: 1fr;
+    }
+
+    }
+</style>
+
+<section class="section detail-container">
+    <div class="detail-card">
+        <!-- Header -->
+        <div class="detail-header @(Model.Status == "Toksik Mesaj" ? "toxic" : "")">
+            <a href="/Message/MessageList/" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Geri Dön
+            </a>
+
+            <div class="header-title-section">
+                <h2>
+                    <i class="fas fa-envelope-open-text"></i>
+                    Mesaj Detayı
+                </h2>
+                <p>
+                    @Model.SendDate.ToString("dd MMMM yyyy, HH:mm")
+                </p>
+            </div>
+
+            @{
+                var statusIcon = Model.Status switch
+                {
+                    "Toksik Mesaj" => "fa-exclamation-triangle",
+                    "Yeni" => "fa-envelope",
+                    "Okundu" => "fa-check",
+                    "Yanıtlandı" => "fa-reply",
+                    "Beklemede" => "fa-clock",
+                    "Kapandı" => "fa-times-circle",
+                    "Arşivlendi" => "fa-archive",
+                    _ => "fa-info-circle"
+                };
+            }
+
+            <span class="status-badge-large">
+                <i class="fas @statusIcon"></i>
+                @Model.Status
+            </span>
+        </div>
+
+        <!-- Toksik Uyarı -->
+        @if (Model.Status == "Toksik Mesaj")
+        {
+            <div class="message-content-section">
+                <div class="toxic-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="warning-content">
+                        <h4>Toksik İçerik Tespit Edildi</h4>
+                        <p>Bu mesaj yapay zeka tarafından uygunsuz içerik barındırdığı tespit edilmiştir. Lütfen dikkatli olun.</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Meta Bilgiler -->
+        <div class="message-meta">
+            <div class="meta-item">
+                <span class="meta-label">Gönderen</span>
+                <span class="meta-value">
+                    <i class="fas fa-user-circle"></i>
+                    @Model.NameSurname
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">E-posta</span>
+                <span class="meta-value">
+                    <i class="fas fa-envelope"></i>
+                    @Model.Email
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Konu</span>
+                <span class="meta-value">
+                    <i class="fas fa-tag"></i>
+                    @Model.Subject
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Durum</span>
+                <span class="meta-value">
+                    <i class="fas @statusIcon"></i>
+                    @Model.Status
+                </span>
+            </div>
+        </div>
+
+        <!-- Mesaj İçeriği -->
+        <div class="message-content-section">
+            <h3 class="content-title">
+                <i class="fas fa-comment-dots"></i>
+                Mesaj İçeriği
+            </h3>
+            <div class="message-text">
+                @Model.MessageDetails
+            </div>
+        </div>
+
+        <!-- Aksiyon Butonları -->
+        <div class="action-buttons">
+            @if (Model.Status != "Okundu" && Model.Status != "Yanıtlandı")
+            {
+                <a href="/Message/MarkAsRead/@Model.MessageId/" class="action-btn btn-mark-read">
+                    <i class="fas fa-check-circle"></i>
+                    Okundu İşaretle
+                </a>
+            }
+
+            <button onclick="toggleReplySection()" class="action-btn btn-reply">
+                <i class="fas fa-reply"></i>
+                Yanıtla
+            </button>
+
+            <a href="/Message/ArchiveMessage/@Model.MessageId/" class="action-btn btn-archive">
+                <i class="fas fa-archive"></i>
+                Arşivle
+            </a>
+
+            <a href="/Message/DeleteMessage/@Model.MessageId/" class="action-btn btn-delete" onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?');">
+                <i class="fas fa-trash-alt"></i>
+                Sil
+            </a>
+        </div>
+    </div>
+
+    <!-- Yanıt Bölümü -->
+    <div class="reply-section" id="replySection" style="display: none;">
+        <div class="reply-header">
+            <i class="fas fa-paper-plane"></i>
+            Yanıt Gönder
+        </div>
+
+        <form action="/Message/SendReply/@Model.MessageId/" method="post">
+            <textarea name="replyContent" class="reply-textarea" placeholder="Yanıtınızı buraya yazın..." required></textarea>
+
+            <button type="submit" class="send-reply-btn">
+                <i class="fas fa-paper-plane"></i>
+                Yanıt Gönder
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    function toggleReplySection() {
+        const section = document.getElementById('replySection');
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            section.style.display = 'none';
+        }
+    }
+</script>

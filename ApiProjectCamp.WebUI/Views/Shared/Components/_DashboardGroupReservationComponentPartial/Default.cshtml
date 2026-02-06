@@ -1,0 +1,699 @@
+﻿@model List<ResultGroupReservationDto>
+
+<div class="card shadow-sm border-0 rounded-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white py-3">
+        <h4 class="fw-bold mb-0">Grup Rezervasyonları</h4>
+        <div class="position-relative">
+            <input type="text" class="form-control rounded-pill ps-4" placeholder="Rezervasyon ara...">
+            <i class="fas fa-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th></th>
+                        <th>Grup Başlığı</th>
+                        <th>Yetkili Kişi</th>
+                        <th>Durum</th>
+                        <th>Kişi</th>
+                        <th>Son İşlem</th>
+                        <th>Rezervasyon</th>
+                        <th>Öncelik</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        string statusClass = item.ReservationStatus switch
+                        {
+                            "Onaylandı" => "badge-success",
+                            "Bekleniyor" => "badge-warning",
+                            "İptal Edildi" => "badge-danger",
+                            _ => "badge-secondary"
+                        };
+
+                        string statusIcon = item.ReservationStatus switch
+                        {
+                            "Onaylandı" => "fas fa-check-circle",
+                            "Bekleniyor" => "fas fa-hourglass-half",
+                            "İptal Edildi" => "fas fa-times-circle",
+                            _ => "fas fa-info-circle"
+                        };
+
+                        string priorityIcon = item.Priority switch
+                        {
+                            "Yüksek" => "fas fa-exclamation-circle text-danger",
+                            "Orta" => "fas fa-chevron-up text-warning",
+                            "Düşük" => "fas fa-minus-circle text-success",
+                            _ => "fas fa-circle"
+                        };
+
+                        <tr class="table-row-modern">
+                            <td style="width: 35px;">
+                                <input type="checkbox" />
+                            </td>
+                            <td class="fw-semibold">
+                                <i class="fas fa-users text-primary me-2"></i>
+                                @item.GroupTitle
+                            </td>
+                            <td>
+                                <i class="fas fa-user text-secondary me-2"></i>
+                                @item.ResponsibleCustomerName
+                            </td>
+                            <td>
+                                <span class="badge @statusClass px-3 py-2 rounded-pill">
+                                    <i class="@statusIcon me-1"></i>
+                                    @item.ReservationStatus
+                                </span>
+                            </td>
+                            <td>
+                                <i class="fas fa-user-friends text-info me-2"></i>
+                                @item.PersonCount
+                            </td>
+                            <td>
+                                <i class="fas fa-calendar-alt text-warning me-2"></i>
+                                @item.LastProcessDate.ToString("dd-MMM-yyyy")
+                            </td>
+                            <td>
+                                <i class="fas fa-calendar-check text-success me-2"></i>
+                                @item.ReservationDate.ToString("dd-MMM-yyyy")
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                                    <i class="@priorityIcon me-1"></i>
+                                    @item.Priority
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-outline-primary btn-sm rounded-pill px-3 detail-btn"
+                                        data-id="@item.GroupReservationId"
+                                        data-title="@item.GroupTitle"
+                                        data-responsible="@item.ResponsibleCustomerName"
+                                        data-email="@item.Email"
+                                        data-status="@item.ReservationStatus"
+                                        data-person-count="@item.PersonCount"
+                                        data-reservation-date="@item.ReservationDate.ToString("dd MMM yyyy")"
+                                        data-last-process="@item.LastProcessDate.ToString("dd MMM yyyy")"
+                                        data-priority="@item.Priority"
+                                        data-details="@item.Details"
+                                        data-status-class="@statusClass"
+                                        data-status-icon="@statusIcon"
+                                        data-priority-icon="@priorityIcon">
+                                    <i class="fas fa-info-circle me-1"></i> Detaylar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modern Popup Modal -->
+<div class="modal fade" id="reservationDetailModal" tabindex="-1" aria-labelledby="reservationDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4 modal-modern">
+            <!-- Modal Header with Gradient -->
+            <div class="modal-header border-0 position-relative overflow-hidden py-3 px-4">
+                <div class="header-gradient-bg"></div>
+                <div class="position-relative z-3 w-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="modal-title fw-bold mb-1 text-white" id="reservationDetailModalLabel">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                <span id="modal-title">Grup Rezervasyon Detayları</span>
+                            </h5>
+                            <p class="text-white opacity-90 mb-0" style="font-size: 0.85rem;">Rezervasyon bilgilerini görüntüleyin</p>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white modal-close-custom shadow-sm" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <div class="row g-3">
+                    <!-- Yetkili Bilgileri Card -->
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <div class="info-card-header">
+                                <div class="info-icon bg-primary-soft">
+                                    <i class="fas fa-user-tie text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0">Yetkili Bilgileri</h6>
+                            </div>
+                            <div class="info-card-body">
+                                <div class="info-item">
+                                    <div class="info-label">
+                                        <i class="fas fa-user text-primary me-2"></i>
+                                        Yetkili Kişi
+                                    </div>
+                                    <div class="info-value fw-semibold" id="modal-responsible">
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">
+                                        <i class="fas fa-envelope text-primary me-2"></i>
+                                        E-posta Adresi
+                                    </div>
+                                    <div class="info-value" id="modal-email">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rezervasyon Bilgileri Card -->
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <div class="info-card-header">
+                                <div class="info-icon bg-success-soft">
+                                    <i class="fas fa-calendar-alt text-success"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0">Rezervasyon Bilgileri</h6>
+                            </div>
+                            <div class="info-card-body">
+                                <div class="info-item">
+                                    <div class="info-label">
+                                        <i class="fas fa-users text-success me-2"></i>
+                                        Kişi Sayısı
+                                    </div>
+                                    <div class="info-value fw-semibold" id="modal-person-count">
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">
+                                        <i class="fas fa-calendar-check text-success me-2"></i>
+                                        Rezervasyon Tarihi
+                                    </div>
+                                    <div class="info-value" id="modal-reservation-date">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Durum ve Öncelik -->
+                    <div class="col-12">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <div class="status-card">
+                                    <div class="status-label">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Durum
+                                    </div>
+                                    <div class="status-value" id="modal-status">
+                                        <!-- Status badge will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="status-card">
+                                    <div class="status-label">
+                                        <i class="fas fa-flag me-1"></i>
+                                        Öncelik
+                                    </div>
+                                    <div class="status-value" id="modal-priority">
+                                        <!-- Priority badge will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="status-card">
+                                    <div class="status-label">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Son İşlem
+                                    </div>
+                                    <div class="status-value fw-semibold text-dark" style="font-size: 0.9rem;" id="modal-last-process">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detaylı Açıklama -->
+                    <div class="col-12">
+                        <div class="details-card">
+                            <div class="details-header">
+                                <i class="fas fa-file-alt me-2"></i>
+                                Detaylı Açıklama
+                            </div>
+                            <div class="details-body" id="modal-details">
+                                <!-- Details text will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer border-0 px-4 py-3 bg-light">
+                <button type="button" class="btn btn-light-custom rounded-pill px-4 py-2 modal-btn-close">
+                    <i class="fas fa-times me-2"></i>Kapat
+                </button>
+                <a href="/GrupRezervasyonlari/Duzenle/" class="btn btn-primary-custom rounded-pill px-4 py-2">
+                    <i class="fas fa-edit me-2"></i>Düzenle
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-row-modern:hover {
+        background-color: #f8f9fa !important;
+        transition: 0.2s ease-in-out;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    /* Modal Modern Styles */
+    .modal-modern {
+        overflow: hidden;
+        max-height: 90vh;
+    }
+
+    /* Header Gradient Background - KOMPAKT */
+    .header-gradient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        z-index: 1;
+    }
+
+        .header-gradient-bg::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -15%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+    /* Info Cards - KOMPAKT */
+    .info-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+    .info-card-header {
+        padding: 14px 16px;
+        background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .bg-primary-soft {
+        background-color: rgba(102, 126, 234, 0.1);
+    }
+
+    .bg-success-soft {
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+
+    .info-card-body {
+        padding: 16px;
+    }
+
+    .info-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f3f5;
+    }
+
+        .info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+    .info-label {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+
+    .info-value {
+        font-size: 0.95rem;
+        color: #212529;
+    }
+
+    /* Status Cards - KOMPAKT */
+    .status-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 14px;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .status-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+        }
+
+    .status-label {
+        font-size: 0.7rem;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .status-value {
+        font-size: 1rem;
+    }
+
+    /* Details Card - KOMPAKT */
+    .details-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .details-header {
+        padding: 12px 16px;
+        background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+        border-bottom: 1px solid #e9ecef;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .details-body {
+        padding: 16px;
+        color: #495057;
+        line-height: 1.7;
+        font-size: 0.9rem;
+        min-height: 60px;
+        max-height: 120px;
+        overflow-y: auto;
+    }
+
+        /* Custom Scrollbar */
+        .details-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .details-body::-webkit-scrollbar-track {
+            background: #f1f3f5;
+            border-radius: 10px;
+        }
+
+        .details-body::-webkit-scrollbar-thumb {
+            background: #adb5bd;
+            border-radius: 10px;
+        }
+
+            .details-body::-webkit-scrollbar-thumb:hover {
+                background: #6c757d;
+            }
+
+    /* Custom Buttons */
+    .btn-light-custom {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+        .btn-light-custom:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            color: #212529;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        }
+
+    /* Backdrop Solution */
+    .modal-backdrop {
+        display: none !important;
+    }
+
+    .modal.show {
+        background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .modal {
+        z-index: 9999 !important;
+        background-color: transparent;
+    }
+
+    .modal-dialog {
+        z-index: 10000 !important;
+        position: relative;
+    }
+
+    .modal-content {
+        overflow: hidden;
+        background: white !important;
+        z-index: 10001 !important;
+        position: relative;
+    }
+
+    .modal-close-custom,
+    .modal-btn-close,
+    .modal-footer .btn {
+        z-index: 10002 !important;
+        position: relative;
+        cursor: pointer !important;
+        pointer-events: all !important;
+    }
+
+    .btn-close {
+        opacity: 1;
+        width: 28px;
+        height: 28px;
+        background-size: 14px;
+    }
+
+        .btn-close:hover {
+            opacity: 0.8;
+            transform: rotate(90deg);
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+    .badge-success {
+        background-color: #28a745 !important;
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .badge-warning {
+        background-color: #ffc107 !important;
+        color: #000;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .badge-danger {
+        background-color: #dc3545 !important;
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    /* Animations */
+    .modal.fade .modal-dialog {
+        transform: scale(0.9) translateY(-30px);
+        transition: all 0.3s ease-out;
+    }
+
+    .modal.show .modal-dialog {
+        transform: scale(1) translateY(0);
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .modal-lg {
+            margin: 1rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem !important;
+        }
+
+        .info-card-header,
+        .info-card-body {
+            padding: 12px !important;
+        }
+
+        .status-card {
+            padding: 12px !important;
+        }
+
+        .modal-header {
+            padding: 1rem !important;
+        }
+
+        .modal-footer {
+            padding: 1rem !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailButtons = document.querySelectorAll('.detail-btn');
+        const modalElement = document.getElementById('reservationDetailModal');
+        let modalInstance = null;
+
+        detailButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const title = this.getAttribute('data-title');
+                const responsible = this.getAttribute('data-responsible');
+                const email = this.getAttribute('data-email');
+                const status = this.getAttribute('data-status');
+                const personCount = this.getAttribute('data-person-count');
+                const reservationDate = this.getAttribute('data-reservation-date');
+                const lastProcess = this.getAttribute('data-last-process');
+                const priority = this.getAttribute('data-priority');
+                const details = this.getAttribute('data-details');
+                const statusClass = this.getAttribute('data-status-class');
+                const statusIcon = this.getAttribute('data-status-icon');
+                const priorityIcon = this.getAttribute('data-priority-icon');
+
+                document.getElementById('modal-title').textContent = title;
+                document.querySelector('#modal-responsible span').textContent = responsible;
+                document.querySelector('#modal-email span').textContent = email || 'Belirtilmemiş';
+                document.querySelector('#modal-person-count span').textContent = personCount + ' Kişi';
+                document.querySelector('#modal-reservation-date span').textContent = reservationDate;
+                document.querySelector('#modal-last-process span').textContent = lastProcess;
+                document.getElementById('modal-details').textContent = details || 'Detay bilgisi bulunmamaktadır.';
+
+                document.getElementById('modal-status').innerHTML = `
+                    <span class="badge ${statusClass} px-3 py-2 rounded-pill">
+                        <i class="${statusIcon} me-1"></i>
+                        ${status}
+                    </span>
+                `;
+
+                document.getElementById('modal-priority').innerHTML = `
+                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill border">
+                        <i class="${priorityIcon} me-1"></i>
+                        ${priority}
+                    </span>
+                `;
+
+                modalInstance = new bootstrap.Modal(modalElement, {
+                    backdrop: false,
+                    keyboard: true,
+                    focus: true
+                });
+                modalInstance.show();
+            });
+        });
+
+        function closeModal() {
+            if (modalInstance) {
+                modalInstance.hide();
+                modalInstance = null;
+            }
+        }
+
+        const closeBtn = modalElement.querySelector('.modal-close-custom');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+
+        const closeBtnFooter = modalElement.querySelector('.modal-btn-close');
+        if (closeBtnFooter) {
+            closeBtnFooter.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+
+        modalElement.addEventListener('click', function(e) {
+            if (e.target === modalElement) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalInstance) {
+                closeModal();
+            }
+        });
+
+        modalElement.addEventListener('hidden.bs.modal', function() {
+            modalInstance = null;
+        });
+    });
+</script>

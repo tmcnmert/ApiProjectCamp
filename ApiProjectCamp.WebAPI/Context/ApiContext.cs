@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApiProjectCamp.WebAPI.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiProjectCamp.WebAPI.Context
 {
@@ -23,6 +24,10 @@ namespace ApiProjectCamp.WebAPI.Context
         public DbSet<Entities.YummyEvent> YummyEvents { get; set; }
         public DbSet<Entities.Notification> Notifications { get; set; }
         public DbSet<Entities.About> Abouts { get; set; }
+        public DbSet<Entities.EmployeeTask> EmployeeTasks { get; set; }
+        public DbSet<Entities.EmployeeTaskChef> EmployeeTaskChefs { get; set; }
+        public DbSet<GroupReservation> GroupReservations { get; set; }
+
 
 
 

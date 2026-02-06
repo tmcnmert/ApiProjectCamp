@@ -5,46 +5,454 @@
     int count = 0;
 }
 
+<style>
+    .modern-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: none;
+    }
+
+    .messages-container {
+        padding: 1.5rem;
+    }
+
+    .message-item {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border-left: 4px solid #667eea;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 1.5rem;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        .message-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+            border-left-color: #764ba2;
+        }
+
+        /* Toksik mesajlar için farklı border rengi */
+        .message-item.toxic {
+            border-left-color: #f5576c;
+        }
+
+            .message-item.toxic:hover {
+                box-shadow: 0 4px 16px rgba(245, 87, 108, 0.2);
+                border-left-color: #e91e63;
+            }
+
+        /* Okunmamış mesajlar için bold */
+        .message-item.unread .sender-name {
+            font-weight: 700;
+        }
+
+        .message-item.unread .message-subject {
+            font-weight: 600;
+        }
+
+    .message-number {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    /* Toksik mesajlar için farklı numara arkaplanı */
+    .message-item.toxic .message-number {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .message-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .message-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .sender-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .sender-email {
+        color: #667eea;
+        font-size: 0.85rem;
+        background: #f8f9ff;
+        padding: 0.25rem 0.7rem;
+        border-radius: 12px;
+    }
+
+    .message-date {
+        color: #999;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* Status Badge Stilleri */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-toxic {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        color: white;
+    }
+
+    .status-yeni {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    .status-okundu {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+    }
+
+    .status-yanitlandi {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+    }
+
+    .status-beklemede {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        color: #8b4513;
+    }
+
+    .status-kapandi {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #555;
+    }
+
+    .status-arsivlendi {
+        background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        color: #666;
+    }
+
+    .message-subject {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .message-preview {
+        color: #999;
+        font-size: 0.85rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .message-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .modern-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+    .btn-view {
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        color: white;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #999;
+    }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+    .subject-icon {
+        color: #667eea;
+        margin-right: 0.3rem;
+    }
+
+    /* Filtre butonları */
+    .filter-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        color: #666;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+    @@media (max-width: 768px) {
+        .message-item {
+            grid-template-columns: 1fr;
+        }
+
+        .message-actions {
+            justify-content: flex-start;
+        }
+    }
+</style>
+
 <section class="section">
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Gelen Mesaj Listesi</h4>
+            <div class="col-12">
+                <div class="card modern-card">
+                    <div class="card-header" style="background: white; border-bottom: 2px solid #f0f0f0; border-radius: 15px 15px 0 0;">
+                        <h4 style="color: #667eea; font-weight: 700; margin: 0;">
+                            <i class="fas fa-inbox" style="margin-right: 10px;"></i>
+                            Gelen Mesaj Listesi
+                        </h4>
+                        <div class="card-header-action">
+                            <a href="/Message/CreateMessage/" class="modern-btn btn-create">
+                                <i class="fas fa-plus"></i>
+                                Yeni Mesaj Oluştur
+                            </a>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Gönderen Ad Soyad</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Konu</th>
-                                    <th scope="col">Tarih Bilgisi</th>
-                                    <th scope="col">Mesajı Aç</th>
-                                    <th scope="col">Güncelle</th>
-                                    <th scope="col">Sil</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="card-body" style="padding: 0;">
+                        @if (Model.Count > 0)
+                        {
+                            <div class="messages-container">
+                                <!-- Filtre Butonları -->
+                                <div class="filter-buttons">
+                                    <button class="filter-btn active" data-filter="all">
+                                        <i class="fas fa-list"></i>
+                                        Tümü (@Model.Count)
+                                    </button>
+                                    <button class="filter-btn" data-filter="Toksik Mesaj">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Toksik Mesajlar (@Model.Count(m => m.Status == "Toksik Mesaj"))
+                                    </button>
+                                    <button class="filter-btn" data-filter="Yeni">
+                                        <i class="fas fa-envelope"></i>
+                                        Yeni (@Model.Count(m => m.Status == "Yeni"))
+                                    </button>
+                                    <button class="filter-btn" data-filter="Okundu">
+                                        <i class="fas fa-check"></i>
+                                        Okundu (@Model.Count(m => m.Status == "Okundu"))
+                                    </button>
+                                    <button class="filter-btn" data-filter="Yanıtlandı">
+                                        <i class="fas fa-reply"></i>
+                                        Yanıtlandı (@Model.Count(m => m.Status == "Yanıtlandı"))
+                                    </button>
+                                </div>
+
                                 @foreach (var item in Model)
                                 {
                                     count++;
-                                    <tr>
-                                        <th scope="row">@count</th>
-                                        <th scope="row">@item.NameSurname</th>
-                                        <th scope="row">@item.Email</th>
-                                        <td>@item.Subject</td>
-                                        <td>@item.SendDate.ToString("dd-MMM-yyyy")</td>
-                                        <td><a href="/Message/AnswerMessageWithOpenAI/@item.MessageId" class="btn btn-info">Mesajı Aç</a></td>
-                                        <td><a href="/Message/UpdateMessage/@item.MessageId" class="btn btn-warning">Güncelle</a></td>
-                                        <td><a href="/Message/DeleteMessage/@item.MessageId" class="btn btn-danger">Sil</a></td>
-                                    </tr>
+                                    var isToxic = item.Status == "Toksik Mesaj";
+                                    var isUnread = item.Status == "Yeni" || !item.IsRead;
+                                    var statusClass = "";
+                                    var statusIcon = "";
+
+                                    switch (item.Status)
+                                    {
+                                        case "Toksik Mesaj":
+                                            statusClass = "status-toxic";
+                                            statusIcon = "fa-exclamation-triangle";
+                                            break;
+                                        case "Yeni":
+                                            statusClass = "status-yeni";
+                                            statusIcon = "fa-envelope";
+                                            break;
+                                        case "Okundu":
+                                            statusClass = "status-okundu";
+                                            statusIcon = "fa-check";
+                                            break;
+                                        case "Yanıtlandı":
+                                            statusClass = "status-yanitlandi";
+                                            statusIcon = "fa-reply";
+                                            break;
+                                        case "Beklemede":
+                                            statusClass = "status-beklemede";
+                                            statusIcon = "fa-clock";
+                                            break;
+                                        case "Kapandı":
+                                            statusClass = "status-kapandi";
+                                            statusIcon = "fa-times-circle";
+                                            break;
+                                        case "Arşivlendi":
+                                            statusClass = "status-arsivlendi";
+                                            statusIcon = "fa-archive";
+                                            break;
+                                        default:
+                                            statusClass = "status-yeni";
+                                            statusIcon = "fa-info-circle";
+                                            break;
+                                    }
+
+                                    <div class="message-item @(isToxic ? "toxic" : "") @(isUnread ? "unread" : "")" data-status="@item.Status" onclick="window.location.href='/Message/MessageDetail/@item.MessageId/'">
+                                        <div class="message-number">
+                                            @count
+                                        </div>
+
+                                        <div class="message-content">
+                                            <div class="message-header">
+                                                <div class="sender-name">
+                                                    <i class="fas fa-user-circle"></i>
+                                                    @item.NameSurname
+                                                    @if (isUnread)
+                                                    {
+                                                        <span style="width: 8px; height: 8px; background: #f5576c; border-radius: 50%; margin-left: 0.3rem;"></span>
+                                                    }
+                                                </div>
+                                                <div class="sender-email">
+                                                    <i class="fas fa-envelope"></i>
+                                                    @item.Email
+                                                </div>
+                                                <div class="message-date">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                    @item.SendDate.ToString("dd MMM yyyy")
+                                                </div>
+                                                <!-- Status Badge -->
+                                                <span class="status-badge @statusClass">
+                                                    <i class="fas @statusIcon"></i>
+                                                    @item.Status
+                                                </span>
+                                            </div>
+
+                                            <div class="message-subject">
+                                                <i class="fas fa-tag subject-icon"></i>
+                                                <strong>Konu:</strong> @item.Subject
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(item.MessageDetails))
+                                            {
+                                                <div class="message-preview">
+                                                    <i class="fas fa-comment-dots" style="color: #ccc; margin-right: 0.3rem;"></i>
+                                                    @item.MessageDetails
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <div class="message-actions" onclick="event.stopPropagation();">
+                                            <a href="/Message/MessageDetail/@item.MessageId/" class="modern-btn btn-view" title="Mesajı Görüntüle">
+                                                <i class="fas fa-eye"></i>
+                                                Görüntüle
+                                            </a>
+                                            <a href="/Message/DeleteMessage/@item.MessageId/" class="modern-btn btn-delete" title="Sil" onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?');">
+                                                <i class="fas fa-trash-alt"></i>
+                                                Sil
+                                            </a>
+                                        </div>
+                                    </div>
                                 }
-                            </tbody>
-                        </table>
-                        <a href="/Message/CreateMessage/" class="btn btn-info">Yeni Mesaj Girişi</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="messages-container">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>Henüz gelen mesaj bulunmamaktadır.</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer" style="background: white; border-top: 2px solid #f0f0f0;">
+                        <div style="color: #999; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i>
+                            Toplam <strong style="color: #667eea;">@Model.Count</strong> mesaj listelendi
+                            @if (Model.Any(m => m.Status == "Toksik Mesaj"))
+                            {
+                                <span style="margin-left: 1rem;">
+                                    <i class="fas fa-exclamation-triangle" style="color: #f5576c;"></i>
+                                    <strong style="color: #f5576c;">@Model.Count(m => m.Status == "Toksik Mesaj")</strong> toksik mesaj
+                                </span>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,5 +460,34 @@
     </div>
 </section>
 
+<script>
+    // Filtre fonksiyonu
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const messageItems = document.querySelectorAll('.message-item');
 
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
 
+                // Aktif buton stilini güncelle
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                // Mesajları filtrele
+                messageItems.forEach(item => {
+                    if (filter === 'all') {
+                        item.style.display = 'grid';
+                    } else {
+                        const itemStatus = item.getAttribute('data-status');
+                        if (itemStatus === filter) {
+                            item.style.display = 'grid';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
