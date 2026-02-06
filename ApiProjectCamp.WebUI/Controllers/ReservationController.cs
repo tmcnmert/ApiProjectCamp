@@ -28,55 +28,111 @@ namespace ApiProjectCamp.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateReservation()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateReservation(CreateReservationDto createReservationDto)
+        public async Task<IActionResult> ReservationDetail(int id)
         {
             var client = _httpClientFactory.CreateClient("api");
-            var jsonData = JsonConvert.SerializeObject(createReservationDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("/api/Reservations/", stringContent);
+            var responseMessage = await client.GetAsync($"/api/Reservations/GetReservation?id={id}");
+
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("ReservationList");
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var reservation = JsonConvert.DeserializeObject<GetReservationByIdDto>(jsonData);
+                return View(reservation);
             }
-            return View();
+
+            return RedirectToAction("ReservationList");
         }
 
+        private async Task<bool> UpdateReservationStatus(int id, string status)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("api");
+
+                var getResponse = await client.GetAsync($"/api/Reservations/GetReservation?id={id}");
+                if (!getResponse.IsSuccessStatusCode) return false;
+
+                var reservationJson = await getResponse.Content.ReadAsStringAsync();
+                var reservation = JsonConvert.DeserializeObject<UpdateReservationDto>(reservationJson);
+
+                reservation.ReservationStatus = status;
+
+                var jsonData = JsonConvert.SerializeObject(reservation);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var responseMessage = await client.PutAsync("/api/Reservations", stringContent);
+
+                return responseMessage.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveReservation(int id)
+        {
+            var success = await UpdateReservationStatus(id, "Onaylandı");
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Rezervasyon başarıyla onaylandı.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Rezervasyon onaylanırken bir hata oluştu.";
+            }
+
+            return RedirectToAction("ReservationList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HoldReservation(int id)
+        {
+            var success = await UpdateReservationStatus(id, "Beklemede");
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Rezervasyon beklemeye alındı.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Rezervasyon bekletilirken bir hata oluştu.";
+            }
+
+            return RedirectToAction("ReservationList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelReservation(int id)
+        {
+            var success = await UpdateReservationStatus(id, "İptal Edildi");
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Rezervasyon iptal edildi.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Rezervasyon iptal edilirken bir hata oluştu.";
+            }
+
+            return RedirectToAction("ReservationList");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> DeleteReservation(int id)
         {
             var client = _httpClientFactory.CreateClient("api");
             var responseMessage = await client.DeleteAsync($"/api/Reservations?id={id}");
             if (responseMessage.IsSuccessStatusCode)
             {
+                TempData["SuccessMessage"] = "Rezervasyon başarıyla silindi.";
                 return RedirectToAction("ReservationList");
             }
-            return View();
+            TempData["ErrorMessage"] = "Rezervasyon silinirken bir hata oluştu.";
+            return RedirectToAction("ReservationList");
         }
-        [HttpGet]
-        public async Task<IActionResult> UpdateReservation(int id)
-        {
-            var client = _httpClientFactory.CreateClient("api");
-            var responseMessage = await client.GetAsync($"/api/Reservations/GetReservation?id={id}");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var value = JsonConvert.DeserializeObject<GetReservationByIdDto>(jsonData);
-            return View(value);
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateReservation(UpdateReservationDto updateReservationDto)
-        {
-            var client = _httpClientFactory.CreateClient("api");
-            var jsonData = JsonConvert.SerializeObject(updateReservationDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("/api/Reservations", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("ReservationList");
-            }
-            return View();
-        }
+
     }
 }

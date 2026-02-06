@@ -5,31 +5,285 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<style>
+    .modern-form-card {
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
+        background: white;
+    }
 
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        color: white;
+        border-bottom: none;
+    }
+
+        .form-header h4 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+        }
+
+        .form-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+    .modern-form-body {
+        padding: 2.5rem;
+    }
+
+    .form-group-modern {
+        margin-bottom: 1.75rem;
+        position: relative;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+        .form-label-modern i {
+            color: #667eea;
+            font-size: 1rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+            border-radius: 6px;
+        }
+
+    .form-control-modern {
+        border: 2px solid #e8ecff;
+        border-radius: 12px;
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: #f8f9ff;
+    }
+
+        .form-control-modern:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+            outline: none;
+        }
+
+        .form-control-modern:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+    textarea.form-control-modern {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .btn-submit-modern {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+    }
+
+        .btn-submit-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+    .btn-cancel-modern {
+        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(127, 140, 141, 0.3);
+        cursor: pointer;
+        text-decoration: none;
+        justify-content: center;
+    }
+
+        .btn-cancel-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(127, 140, 141, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    .form-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .required-star {
+        color: #e74c3c;
+        margin-left: 0.25rem;
+    }
+
+    .form-hint {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .form-hint i {
+            color: #667eea;
+        }
+
+    @@media (max-width: 768px) {
+        .modern-form-body
+
+    {
+        padding: 1.5rem;
+    }
+
+    .form-header {
+        padding: 1.5rem;
+    }
+
+        .form-header h4 {
+            font-size: 1.4rem;
+        }
+
+    .form-actions {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    @@keyframes slideIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .modern-form-card {
+        animation: slideIn 0.5s ease-out;
+    }
+</style>
 
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12 col-md-12 col-lg-12"> 
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Yeni Şef Ekleme Sayfası</h4>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="card modern-form-card">
+                    <div class="form-header">
+                        <h4>
+                            <i class="fas fa-user-tie"></i>
+                            Yeni Şef Ekle
+                        </h4>
+                        <p>Mutfak ekibinize yeni bir şef üyesi ekleyin</p>
                     </div>
-                    <div class="card-body">
+                    <div class="modern-form-body">
                         <form method="post">
-                            <label>Şef Adı Soyadı</label>
-                            <input type="text" asp-for="NameSurname" class="form-control" />
-                            <br />
-                            <label>Başlık</label>
-                            <input type="text" asp-for="Title" class="form-control" />
-                            <br />
-                            <label>Açıklama</label>
-                            <textarea class="form-control" asp-for="Description" rows="5"></textarea>
-                            <br />
-                            <label>Şef Görsel URL</label>
-                            <input type="text" asp-for="ImageUrl" class="form-control" />
-                            <br />
-                            <button class="btn btn-primary">Şef Ekle</button>
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-user"></i>
+                                    Şef Adı Soyadı
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="NameSurname" class="form-control form-control-modern" placeholder="Örn: Ali Veli" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Şefin tam adını ve soyadını girin
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-briefcase"></i>
+                                    Başlık / Uzmanlık Alanı
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="Title" class="form-control form-control-modern" placeholder="Örn: Baş Şef, Pasta Şefi" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Şefin pozisyonunu veya uzmanlık alanını belirtin
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-align-left"></i>
+                                    Açıklama / Biyografi
+                                    <span class="required-star">*</span>
+                                </label>
+                                <textarea asp-for="Description" class="form-control form-control-modern" placeholder="Şef hakkında bilgi, deneyimler ve başarılar..." rows="5" required></textarea>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Şefin deneyimlerini, başarılarını ve uzmanlık alanlarını detaylı bir şekilde yazın
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-image"></i>
+                                    Şef Görsel URL
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="ImageUrl" class="form-control form-control-modern" placeholder="https://example.com/chef-image.jpg" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Şefin profesyonel fotoğrafının URL adresini girin
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <a href="/Chef/ChefList" class="btn-cancel-modern">
+                                    <i class="fas fa-times"></i>
+                                    İptal
+                                </a>
+                                <button type="submit" class="btn-submit-modern">
+                                    <i class="fas fa-plus"></i>
+                                    Şef Ekle
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -37,8 +291,3 @@
         </div>
     </div>
 </section>
-
-
-
-
-

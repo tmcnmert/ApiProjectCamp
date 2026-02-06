@@ -5,26 +5,302 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<style>
+    .modern-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: none;
+    }
+
+    .ai-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    }
+
+    .ai-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .ai-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .ai-title h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .ai-title p {
+        margin: 0.25rem 0 0 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+
+    .message-section {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #667eea;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+        .section-header i {
+            font-size: 1.3rem;
+        }
+
+    .modern-textarea {
+        border-radius: 10px;
+        border: 2px solid #e8ecff;
+        padding: 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        resize: vertical;
+        min-height: 140px;
+        background: #f8f9ff;
+    }
+
+        .modern-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+    .ai-response-box {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+        border: 2px solid #667eea;
+        border-radius: 12px;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .ai-response-box::before {
+            content: '✨';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+    .ai-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .modern-btn {
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+    }
+
+        .modern-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-send-email {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-back {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        text-decoration: none;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+        border: 2px solid #4dd0e1;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        color: #00838f;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .info-box i {
+            font-size: 1.5rem;
+        }
+
+    .message-id-badge {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 1rem;
+        right: 3rem;
+        background: white;
+        color: #667eea;
+        border: 2px solid #667eea;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .copy-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+</style>
 
 <section class="section">
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Open AI ile Otomatik Mesaj Yanıt Sayfası</h4>
+            <div class="col-12 col-md-10 col-lg-10 mx-auto">
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="ai-title" style="flex: 1;">
+                            <h3>
+                                <i class="fas fa-magic"></i>
+                                OpenAI Otomatik Yanıt Sistemi
+                            </h3>
+                            <p>Yapay zeka destekli akıllı müşteri yanıtları</p>
+                        </div>
+                        <div class="message-id-badge">
+                            <i class="fas fa-hashtag"></i>
+                            ID: @Model.MessageId
+                        </div>
                     </div>
-                    <div class="card-body">
+                </div>
+
+                <div class="card modern-card">
+                    <div class="card-body" style="padding: 2rem;">
                         <form method="post">
                             <input type="hidden" asp-for="MessageId" />
-                            <label>Müşteri Mesajı</label>
-                            <textarea asp-for="MessageDetails" class="form-control" style="height:140px !important" ></textarea>
-                            <br />
 
-                            <label>Open AI Otomatik Cevabı</label>
-                            <textarea class="form-control" style="height:140px !important">@ViewBag.answerAI</textarea>
-                            <br />
-                            <button class="btn btn-primary">Cevabı Mail Olarak Gönder</button>
+                            <div class="message-section">
+                                <div class="section-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    Müşteri Mesajı
+                                </div>
+                                <textarea asp-for="MessageDetails"
+                                          class="modern-textarea"
+                                          readonly></textarea>
+                                <div style="margin-top: 1rem; color: #999; font-size: 0.875rem;">
+                                    <i class="fas fa-info-circle"></i>
+                                    Bu mesaj müşteri tarafından gönderilmiştir
+                                </div>
+                            </div>
+
+                            <div class="message-section">
+                                <div class="section-header">
+                                    <i class="fas fa-brain"></i>
+                                    OpenAI Otomatik Yanıtı
+                                </div>
+
+                                @if (!string.IsNullOrEmpty(ViewBag.answerAI))
+                                {
+                                    <div class="ai-badge">
+                                        <i class="fas fa-check-circle"></i>
+                                        AI Tarafından Oluşturuldu
+                                    </div>
+                                    <div class="ai-response-box">
+                                        <button type="button" class="copy-btn" onclick="copyToClipboard()">
+                                            <i class="fas fa-copy"></i>
+                                            Kopyala
+                                        </button>
+                                        <textarea id="aiResponse" class="modern-textarea" style="background: white; border: none;" readonly>@ViewBag.answerAI</textarea>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div style="text-align: center; padding: 3rem; color: #999;">
+                                        <i class="fas fa-robot" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                        <p>AI yanıtı henüz oluşturulmadı</p>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="info-box">
+                                <i class="fas fa-lightbulb"></i>
+                                <div>
+                                    <strong>İpucu:</strong> AI tarafından oluşturulan yanıt, müşteri memnuniyetini ön planda tutacak şekilde optimize edilmiştir. İsterseniz düzenleyerek gönderebilirsiniz.
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="modern-btn btn-send-email">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Cevabı Mail Olarak Gönder
+                                </button>
+                                <a href="/Message/MessageDetail/@Model.MessageId/" class="modern-btn btn-back">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Mesaj Detayına Dön
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -33,4 +309,24 @@
     </div>
 </section>
 
+<script>
+    function copyToClipboard() {
+        const textarea = document.getElementById('aiResponse');
+        textarea.select();
+        document.execCommand('copy');
 
+        const btn = event.target.closest('.copy-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Kopyalandı!';
+        btn.style.background = '#43e97b';
+        btn.style.color = 'white';
+        btn.style.borderColor = '#43e97b';
+
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = 'white';
+            btn.style.color = '#667eea';
+            btn.style.borderColor = '#667eea';
+        }, 2000);
+    }
+</script>

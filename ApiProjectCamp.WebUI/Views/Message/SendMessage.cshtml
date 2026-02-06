@@ -1,29 +1,209 @@
 ﻿@model CreateMessageDto
 
-<form asp-action="SendMessage" asp-controller="Message" method="post">
+<style>
+    .contact-form-modern {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
+    .form-group-modern {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-input-modern {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 2px solid #e8ecff;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9ff;
+    }
+
+        .form-input-modern:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .form-input-modern::placeholder {
+            color: #999;
+        }
+
+    .form-textarea-modern {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 2px solid #e8ecff;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9ff;
+        resize: vertical;
+        min-height: 150px;
+        font-family: inherit;
+    }
+
+        .form-textarea-modern:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .form-textarea-modern::placeholder {
+            color: #999;
+        }
+
+    .submit-btn-modern {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+        .submit-btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn-modern:active {
+            transform: translateY(-1px);
+        }
+
+    .form-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #667eea;
+        font-size: 1.1rem;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+        .input-wrapper .form-input-modern {
+            padding-left: 3rem;
+        }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+        .form-header h3 {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+    .ai-detection-info {
+        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+        border: 2px solid #4dd0e1;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+        color: #00838f;
+    }
+
+        .ai-detection-info i {
+            font-size: 1.5rem;
+        }
+</style>
+
+<form asp-action="SendMessage" asp-controller="Message" method="post" class="contact-form-modern">
+    <div class="form-header">
+        <h3>
+            <i class="fas fa-paper-plane"></i>
+            Bize Mesaj Gönderin
+        </h3>
+        <p>Görüş, öneri ve sorularınız için formu doldurun</p>
+    </div>
 
     <div class="row gy-4">
-
         <div class="col-md-6">
-            <input asp-for="NameSurname" class="form-control" placeholder="Adınız Soyadınız" />
+            <div class="form-group-modern">
+                <div class="input-wrapper">
+                    <i class="fas fa-user form-icon"></i>
+                    <input asp-for="NameSurname"
+                           class="form-input-modern"
+                           placeholder="Adınız Soyadınız *"
+                           required />
+                </div>
+            </div>
         </div>
 
         <div class="col-md-6">
-            <input asp-for="Email" type="email" class="form-control" placeholder="Email Adresiniz" />
+            <div class="form-group-modern">
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope form-icon"></i>
+                    <input asp-for="Email"
+                           type="email"
+                           class="form-input-modern"
+                           placeholder="E-posta Adresiniz *"
+                           required />
+                </div>
+            </div>
         </div>
 
         <div class="col-md-12">
-            <input asp-for="Subject" class="form-control" placeholder="Konu" />
+            <div class="form-group-modern">
+                <div class="input-wrapper">
+                    <i class="fas fa-tag form-icon"></i>
+                    <input asp-for="Subject"
+                           class="form-input-modern"
+                           placeholder="Konu *"
+                           required />
+                </div>
+            </div>
         </div>
 
         <div class="col-md-12">
-            <textarea asp-for="MessageDetails" class="form-control" rows="6" placeholder="Mesajınız"></textarea>
+            <div class="form-group-modern">
+                <textarea asp-for="MessageDetails"
+                          class="form-textarea-modern"
+                          rows="6"
+                          placeholder="Mesajınızı buraya yazın... *"
+                          required></textarea>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="ai-detection-info">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Güvenlik:</strong> Mesajınız yapay zeka tarafından otomatik olarak kontrol edilecektir.
+                </div>
+            </div>
         </div>
 
         <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary"> Mesajı Gönder</button>
+            <button type="submit" class="submit-btn-modern">
+                <i class="fas fa-paper-plane"></i>
+                Mesajı Gönder
+            </button>
         </div>
-
     </div>
 </form>

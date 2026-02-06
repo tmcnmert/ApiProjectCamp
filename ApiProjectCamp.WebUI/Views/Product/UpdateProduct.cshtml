@@ -4,41 +4,350 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<style>
+    .modern-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border: none;
+    }
+
+    .modern-form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .modern-label {
+        color: #667eea;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .modern-input,
+    .modern-select,
+    .modern-textarea {
+        border-radius: 10px;
+        border: 2px solid #e8ecff;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .modern-input:focus,
+        .modern-select:focus,
+        .modern-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background-color: #f8f9ff;
+        }
+
+        .modern-input:hover,
+        .modern-select:hover,
+        .modern-textarea:hover {
+            border-color: #667eea;
+        }
+
+    .modern-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 3rem;
+    }
+
+    .modern-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .modern-btn {
+        padding: 0.75rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .btn-update {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .form-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+        border-bottom: 2px solid #667eea;
+        border-radius: 15px 15px 0 0;
+        padding: 1.5rem;
+    }
+
+    .card-body-custom {
+        padding: 2rem;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .input-icon-wrapper {
+        position: relative;
+    }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .input-icon-wrapper .modern-input,
+        .input-icon-wrapper .modern-select,
+        .input-icon-wrapper .modern-textarea {
+            padding-left: 3rem;
+        }
+
+    .product-id-badge {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-section {
+        background: #f8f9ff;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #667eea;
+    }
+
+    .section-title {
+        color: #667eea;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .field-hint {
+        font-size: 0.75rem;
+        color: #999;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .price-input-wrapper {
+        position: relative;
+    }
+
+        .price-input-wrapper::after {
+            content: '₺';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .price-input-wrapper .modern-input {
+            padding-right: 3rem;
+        }
+</style>
 
 <section class="section">
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Ürün Güncelleme Sayfası</h4>
+            <div class="col-12 col-md-10 col-lg-10 mx-auto">
+                <div class="card modern-card">
+                    <div class="card-header card-header-custom">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="form-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="color: #667eea; font-weight: 700; margin: 0;">
+                                    Ürün Güncelleme
+                                </h4>
+                                <p style="color: #999; font-size: 0.875rem; margin: 0.25rem 0 0 0;">
+                                    Ürün bilgilerini düzenleyin
+                                </p>
+                            </div>
+                            <div class="product-id-badge">
+                                <i class="fas fa-hashtag"></i>
+                                ID: @Model.ProductId
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-custom">
                         <form method="post">
                             <input type="hidden" asp-for="ProductId" />
-                            <label>Ürün Adı</label>
-                            <input type="text" asp-for="ProductName" class="form-control" />
-                            <br />
-                            <label>Ürün Fiyatı</label>
-                            <input type="text" asp-for="Price" class="form-control" />
-                            <br />
-                            <label>Ürün Kategorisi</label>
-                            <select asp-for="CategoryId" class="form-control" asp-items="(IEnumerable<SelectListItem>)ViewBag.v">
-                                <option value="">--Kategori Seçiniz--</option>
-                            </select>
-                            <br />
-                            <label>Ürün Görsel URL</label>
-                            <input type="text" asp-for="ImageUrl" class="form-control" />
-                            <br />
-                            <label>Ürün Açıklaması</label>
-                            <textarea class="form-control" asp-for="ProductDescription" rows="5"></textarea>
-                            <br />
-                            <button class="btn btn-success">Güncelle</button>
+
+                            <!-- Temel Bilgiler -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Temel Ürün Bilgileri
+                                </div>
+
+                                <div class="modern-form-group">
+                                    <label class="modern-label">
+                                        <i class="fas fa-utensils" style="margin-right: 5px;"></i>
+                                        Ürün Adı
+                                    </label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-hamburger"></i>
+                                        <input type="text"
+                                               asp-for="ProductName"
+                                               class="modern-input"
+                                               placeholder="Örn: Izgara Köfte, Tavuk Şiş..."
+                                               required />
+                                    </div>
+                                    <span class="field-hint">Ürünün menüde görünecek adı</span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="modern-form-group">
+                                            <label class="modern-label">
+                                                <i class="fas fa-lira-sign" style="margin-right: 5px;"></i>
+                                                Ürün Fiyatı
+                                            </label>
+                                            <div class="input-icon-wrapper price-input-wrapper">
+                                                <i class="fas fa-tags"></i>
+                                                <input type="number"
+                                                       asp-for="Price"
+                                                       class="modern-input"
+                                                       placeholder="0.00"
+                                                       step="0.01"
+                                                       min="0"
+                                                       required />
+                                            </div>
+                                            <span class="field-hint">Ürünün satış fiyatı (TL)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="modern-form-group">
+                                            <label class="modern-label">
+                                                <i class="fas fa-list-ul" style="margin-right: 5px;"></i>
+                                                Ürün Kategorisi
+                                            </label>
+                                            <div class="input-icon-wrapper">
+                                                <i class="fas fa-folder"></i>
+                                                <select asp-for="CategoryId"
+                                                        class="modern-select"
+                                                        asp-items="(IEnumerable<SelectListItem>)ViewBag.v"
+                                                        required>
+                                                    <option value="">-- Kategori Seçiniz --</option>
+                                                </select>
+                                            </div>
+                                            <span class="field-hint">Ürünün ait olduğu kategori</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modern-form-group">
+                                    <label class="modern-label">
+                                        <i class="fas fa-align-left" style="margin-right: 5px;"></i>
+                                        Ürün Açıklaması
+                                    </label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-comment-dots"></i>
+                                        <textarea asp-for="ProductDescription"
+                                                  class="modern-textarea"
+                                                  rows="5"
+                                                  placeholder="Ürün hakkında detaylı açıklama yazın..."
+                                                  required></textarea>
+                                    </div>
+                                    <span class="field-hint">İçerik, malzemeler ve özel notlar</span>
+                                </div>
+                            </div>
+
+                            <!-- Görsel Bilgileri -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <i class="fas fa-image"></i>
+                                    Görsel Bilgileri
+                                </div>
+
+                                <div class="modern-form-group">
+                                    <label class="modern-label">
+                                        <i class="fas fa-camera" style="margin-right: 5px;"></i>
+                                        Ürün Görsel URL
+                                    </label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-link"></i>
+                                        <input type="url"
+                                               asp-for="ImageUrl"
+                                               class="modern-input"
+                                               placeholder="https://example.com/product-image.jpg"
+                                               required />
+                                    </div>
+                                    <span class="field-hint">Ürün görselinin URL adresi (JPG, PNG formatında)</span>
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="modern-btn btn-update">
+                                    <i class="fas fa-save"></i>
+                                    Güncelle
+                                </button>
+                                <a href="/Product/ProductList/" class="modern-btn btn-cancel">
+                                    <i class="fas fa-times-circle"></i>
+                                    İptal
+                                </a>
+                            </div>
                         </form>
+                    </div>
+                    <div class="card-footer" style="background: white; border-top: 2px solid #f0f0f0; padding: 1rem 2rem;">
+                        <div style="color: #999; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i>
+                            Değişiklikleri kaydetmek için "Güncelle" butonuna tıklayın
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-

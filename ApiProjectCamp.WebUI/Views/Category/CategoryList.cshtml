@@ -151,8 +151,6 @@
                                         <th scope="col" style="width: 8%;">#</th>
                                         <th scope="col" style="width: 8%;"></th>
                                         <th scope="col" style="width: 30%;">Kategori Adı</th>
-                                        <th scope="col" style="width: 18%;">Durum</th>
-                                        <th scope="col" style="width: 18%;">Ürün Sayısı</th>
                                         <th scope="col" style="width: 18%;" class="text-center">İşlemler</th>
                                     </tr>
                                 </thead>
@@ -170,22 +168,8 @@
                                             <td>
                                                 <strong style="color: #333; font-size: 1rem;">@item.CategoryName</strong>
                                             </td>
-                                            <td>
-                                                <span class="badge-status badge-active">
-                                                    <i class="fas fa-check-circle"></i> Aktif
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="stats-badge">
-                                                    <i class="fas fa-box"></i> @Random.Shared.Next(5, 50) ürün
-                                                </span>
-                                            </td>
                                             <td class="text-center">
                                                 <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                                    <a href="/Category/ViewCategory/@item.CategoryId/" class="modern-btn btn-view" title="Görüntüle">
-                                                        <i class="fas fa-eye"></i>
-                                                        Görüntüle
-                                                    </a>
                                                     <a href="/Category/UpdateCategory/@item.CategoryId/" class="modern-btn btn-edit" title="Düzenle">
                                                         <i class="fas fa-edit"></i>
                                                         Düzenle

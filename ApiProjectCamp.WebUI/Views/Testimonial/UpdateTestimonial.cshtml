@@ -5,32 +5,292 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+<style>
+    .modern-form-card {
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
+        background: white;
+    }
 
+    .form-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 2rem;
+        color: white;
+        border-bottom: none;
+    }
+
+        .form-header h4 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+        }
+
+        .form-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+    .modern-form-body {
+        padding: 2.5rem;
+    }
+
+    .form-group-modern {
+        margin-bottom: 1.75rem;
+        position: relative;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+        .form-label-modern i {
+            color: #f5576c;
+            font-size: 1rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe8ec 100%);
+            border-radius: 6px;
+        }
+
+    .form-control-modern {
+        border: 2px solid #ffe8ec;
+        border-radius: 12px;
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: #fff5f7;
+    }
+
+        .form-control-modern:focus {
+            border-color: #f5576c;
+            box-shadow: 0 0 0 4px rgba(245, 87, 108, 0.1);
+            background: white;
+            outline: none;
+        }
+
+        .form-control-modern:hover {
+            border-color: #f5576c;
+            background: white;
+        }
+
+    textarea.form-control-modern {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .btn-submit-modern {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+    }
+
+        .btn-submit-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
+        }
+
+        .btn-submit-modern:active {
+            transform: translateY(-1px);
+        }
+
+    .btn-cancel-modern {
+        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(127, 140, 141, 0.3);
+        cursor: pointer;
+        text-decoration: none;
+        justify-content: center;
+    }
+
+        .btn-cancel-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(127, 140, 141, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    .form-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .required-star {
+        color: #e74c3c;
+        margin-left: 0.25rem;
+    }
+
+    .form-hint {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .form-hint i {
+            color: #f5576c;
+        }
+
+    @@media (max-width: 768px) {
+        .modern-form-body
+
+    {
+        padding: 1.5rem;
+    }
+
+    .form-header {
+        padding: 1.5rem;
+    }
+
+        .form-header h4 {
+            font-size: 1.4rem;
+        }
+
+    .form-actions {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* Animation */
+    @@keyframes slideIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .modern-form-card {
+        animation: slideIn 0.5s ease-out;
+    }
+</style>
 
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4> Müşteri Yorumu Güncelleme Sayfası</h4>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="card modern-form-card">
+                    <div class="form-header">
+                        <h4>
+                            <i class="fas fa-edit"></i>
+                            Müşteri Yorumu Güncelle
+                        </h4>
+                        <p>Mevcut müşteri yorumunu düzenleyin ve güncelleyin</p>
                     </div>
-                    <div class="card-body">
+                    <div class="modern-form-body">
                         <form method="post">
                             <input type="hidden" asp-for="TestimonialId" />
-                            <label>Müşteri Adı Soyadu</label>
-                            <input type="text" asp-for="NameSurname" class="form-control" />
-                            <br />
-                            <label>Müşteri Ünvanı</label>
-                            <input type="text" asp-for="Title" class="form-control" />
-                            <br />
-                            <label>Müşteri Yorumu</label>
-                            <input type="text" asp-for="Comment" class="form-control" />
-                            <br />
-                            <label>Müşteri Görsel URL</label>
-                            <input type="text" asp-for="ImageUrl" class="form-control" />
-                            <br />
-                            <button class="btn btn-success">Yorumu Güncelle</button>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-user"></i>
+                                    Müşteri Adı Soyadı
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="NameSurname" class="form-control form-control-modern" placeholder="Örn: Ahmet Yılmaz" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Müşterinin tam adını ve soyadını girin
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-briefcase"></i>
+                                    Müşteri Ünvanı
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="Title" class="form-control form-control-modern" placeholder="Örn: CEO, Yazılım Geliştirici" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Müşterinin mesleğini veya ünvanını belirtin
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-comment-alt"></i>
+                                    Müşteri Yorumu
+                                    <span class="required-star">*</span>
+                                </label>
+                                <textarea asp-for="Comment" class="form-control form-control-modern" placeholder="Müşteri deneyimini buraya yazın..." rows="5" required></textarea>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Müşterinin deneyimini ve düşüncelerini detaylı bir şekilde yazın
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-image"></i>
+                                    Müşteri Görsel URL
+                                    <span class="required-star">*</span>
+                                </label>
+                                <input type="text" asp-for="ImageUrl" class="form-control form-control-modern" placeholder="https://example.com/image.jpg" required />
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Müşteri profil fotoğrafının URL adresini girin
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <a href="/Testimonial/TestimonialList" class="btn-cancel-modern">
+                                    <i class="fas fa-times"></i>
+                                    İptal
+                                </a>
+                                <button type="submit" class="btn-submit-modern">
+                                    <i class="fas fa-save"></i>
+                                    Güncellemeyi Kaydet
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -38,10 +298,3 @@
         </div>
     </div>
 </section>
-
-
-
-
-
-
-

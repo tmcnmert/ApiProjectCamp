@@ -6,143 +6,208 @@
 }
 <style>
     .modern-card {
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         border: none;
+        background: white;
+        overflow: hidden;
     }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem 2rem;
+        border-bottom: none;
+    }
+
+        .card-header-custom h4 {
+            color: white;
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
     .modern-table {
         border-collapse: separate;
         border-spacing: 0;
+        margin-bottom: 0;
     }
 
         .modern-table thead th {
             background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
             color: #667eea;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             font-size: 0.7rem;
-            letter-spacing: 0.5px;
-            padding: 0.9rem 0.7rem;
+            letter-spacing: 0.8px;
+            padding: 1rem 0.8rem;
             border: none;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 3px solid #667eea;
+            white-space: nowrap;
         }
 
             .modern-table thead th:first-child {
-                border-top-left-radius: 10px;
+                border-top-left-radius: 12px;
             }
 
             .modern-table thead th:last-child {
-                border-top-right-radius: 10px;
+                border-top-right-radius: 12px;
             }
 
         .modern-table tbody tr {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 1px solid #f0f0f0;
         }
 
             .modern-table tbody tr:hover {
-                background-color: #f8f9ff;
-                box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+                background: linear-gradient(90deg, #f8f9ff 0%, #ffffff 100%);
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.12);
+            }
+
+            .modern-table tbody tr:last-child {
+                border-bottom: none;
             }
 
         .modern-table tbody td {
-            padding: 0.9rem 0.7rem;
+            padding: 1rem 0.8rem;
             vertical-align: middle;
             font-size: 0.9rem;
         }
 
     .reservation-number {
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 50%;
-        display: flex;
+        border-radius: 10px;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-weight: bold;
-        font-size: 0.85rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 3px 8px rgba(102, 126, 234, 0.3);
     }
 
     .customer-name {
-        color: #333;
+        color: #2c3e50;
         font-weight: 600;
         font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
+        .customer-name i {
+            color: #667eea;
+            font-size: 0.9rem;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9ff;
+            border-radius: 6px;
+        }
+
     .date-badge {
-        background: #e3f2fd;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         color: #1565c0;
-        padding: 0.3rem 0.7rem;
-        border-radius: 12px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 2px 4px rgba(21, 101, 192, 0.12);
     }
 
     .time-badge {
-        background: #f3e5f5;
+        background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
         color: #6a1b9a;
-        padding: 0.3rem 0.7rem;
-        border-radius: 12px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 2px 4px rgba(106, 27, 154, 0.12);
     }
 
     .people-badge {
-        background: #fff3e0;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
         color: #e65100;
-        padding: 0.3rem 0.7rem;
-        border-radius: 12px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 2px 4px rgba(230, 81, 0, 0.12);
     }
 
     .status-badge {
-        padding: 0.4rem 0.8rem;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        letter-spacing: 0.2px;
     }
 
     .status-approved {
-        background: #d4edda;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         color: #155724;
     }
 
     .status-pending {
-        background: #fff3cd;
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
         color: #856404;
     }
 
     .status-cancelled {
-        background: #f8d7da;
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
         color: #721c24;
     }
 
     .modern-btn {
-        padding: 0.4rem 0.8rem;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        padding: 0.45rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.35rem;
         white-space: nowrap;
+        text-decoration: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
     }
 
         .modern-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+            text-decoration: none;
         }
 
-    .btn-edit {
+        .modern-btn:active {
+            transform: translateY(0);
+        }
+
+        .modern-btn i {
+            font-size: 0.85rem;
+        }
+
+    .btn-detail {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
     }
@@ -169,17 +234,146 @@
 
     .action-buttons {
         display: flex;
-        gap: 0.3rem;
+        gap: 0.35rem;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .btn-create {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
+    .card-footer-custom {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+        border-top: 3px solid #667eea;
+        padding: 1.25rem 2rem;
     }
 
+    .footer-info {
+        color: #667eea;
+        font-size: 0.95rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .footer-info strong {
+            color: #764ba2;
+            font-size: 1.1rem;
+        }
+
+    /* Responsive Tasarım */
+   @@media (max-width: 1400px) {
+        .action-buttons
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .modern-btn {
+        justify-content: center;
+    }
+
+    }
+
+    @@media (max-width: 992px) {
+        .modern-table
+
+    {
+        font-size: 0.85rem;
+    }
+
+    .modern-table thead th,
+    .modern-table tbody td {
+        padding: 0.7rem 0.5rem;
+    }
+
+    }
+
+    @@media (max-width: 768px) {
+        .modern-table thead
+
+    {
+        display: none;
+    }
+
+    .modern-table tbody tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 2px solid #e8ecff;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .modern-table tbody tr:hover {
+            transform: none;
+        }
+
+    .modern-table tbody td {
+        display: block;
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        position: relative;
+        padding-left: 45%;
+    }
+
+        .modern-table tbody td:last-child {
+            border-bottom: none;
+        }
+
+        .modern-table tbody td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 1rem;
+            width: 40%;
+            font-weight: 700;
+            color: #667eea;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+
+    .action-buttons {
+        justify-content: flex-start;
+        flex-direction: row;
+    }
+
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .modern-table tbody tr {
+        animation: fadeIn 0.5s ease-out;
+    }
 </style>
 
 <section class="section">
@@ -187,31 +381,24 @@
         <div class="row">
             <div class="col-12">
                 <div class="card modern-card">
-                    <div class="card-header" style="background: white; border-bottom: 2px solid #f0f0f0; border-radius: 15px 15px 0 0;">
-                        <h4 style="color: #667eea; font-weight: 700; margin: 0;">
-                            <i class="fas fa-calendar-check" style="margin-right: 10px;"></i>
+                    <div class="card-header-custom">
+                        <h4>
+                            <i class="fas fa-calendar-check"></i>
                             Rezervasyon Listesi
                         </h4>
-
-                        <div class="card-header-action">
-                            <a href="/Reservation/CreateReservation/" class="modern-btn btn-create">
-                                <i class="fas fa-plus"></i>
-                                Yeni Rezervasyon Girişi
-                            </a>
-                        </div>
                     </div>
                     <div class="card-body" style="padding: 0;">
                         <div class="table-responsive">
                             <table class="table modern-table">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style="width: 3%;">#</th>
-                                        <th scope="col" style="width: 13%;">Müşteri Adı</th>
-                                        <th scope="col" style="width: 12%;">Rezervasyon Tarih</th>
-                                        <th scope="col" style="width: 7%;">Rezervasyon Saati</th>
-                                        <th scope="col" style="width: 6%;">Kişi Sayısı</th>
-                                        <th scope="col" style="width: 12%;">Rezervasyon Durumu</th>
-                                        <th scope="col" style="width: 47%;" class="text-center">İşlemler</th>
+                                        <th scope="col" style="width: 4%;">#</th>
+                                        <th scope="col" style="width: 16%;">Müşteri Adı</th>
+                                        <th scope="col" style="width: 12%;">Tarih</th>
+                                        <th scope="col" style="width: 9%;">Saat</th>
+                                        <th scope="col" style="width: 7%;">Kişi</th>
+                                        <th scope="col" style="width: 10%;">Durum</th>
+                                        <th scope="col" style="width: 42%;" class="text-center">İşlemler</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -219,73 +406,86 @@
                                     {
                                         count++;
                                         <tr>
-                                            <td>
+                                            <td data-label="#">
                                                 <div class="reservation-number">
                                                     @count
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td data-label="Müşteri Adı">
                                                 <div class="customer-name">
-                                                    <i class="fas fa-user" style="color: #667eea; margin-right: 5px; font-size: 0.8rem;"></i>
-                                                    @item.NameSurname
+                                                    <i class="fas fa-user"></i>
+                                                    <span>@item.NameSurname</span>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td data-label="Tarih">
                                                 <span class="date-badge">
-                                                    <i class="far fa-calendar"></i> @item.ReservationDate.ToString("dd.MM.yyyy")
+                                                    <i class="far fa-calendar"></i>
+                                                    @item.ReservationDate.ToString("dd.MM.yyyy")
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Saat">
                                                 <span class="time-badge">
-                                                    <i class="far fa-clock"></i> @item.ReservationTime
+                                                    <i class="far fa-clock"></i>
+                                                    @item.ReservationTime
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Kişi">
                                                 <span class="people-badge">
-                                                    <i class="fas fa-users"></i> @item.CountofPeople
+                                                    <i class="fas fa-users"></i>
+                                                    @item.CountofPeople
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td data-label="Durum">
                                                 @if (item.ReservationStatus == "Onay Bekliyor" || item.ReservationStatus == "Beklemede")
                                                 {
                                                     <span class="status-badge status-pending">
-                                                        <i class="fas fa-hourglass-half"></i> @item.ReservationStatus
+                                                        <i class="fas fa-hourglass-half"></i>
+                                                        Bekliyor
                                                     </span>
                                                 }
                                                 else if (item.ReservationStatus == "Onaylandı")
                                                 {
                                                     <span class="status-badge status-approved">
-                                                        <i class="fas fa-check-circle"></i> @item.ReservationStatus
+                                                        <i class="fas fa-check-circle"></i>
+                                                        Onaylı
                                                     </span>
                                                 }
                                                 else if (item.ReservationStatus == "İptal Edildi")
                                                 {
                                                     <span class="status-badge status-cancelled">
-                                                        <i class="fas fa-times-circle"></i> @item.ReservationStatus
+                                                        <i class="fas fa-times-circle"></i>
+                                                        İptal
                                                     </span>
                                                 }
                                                 else
                                                 {
                                                     <span class="status-badge status-pending">
-                                                        <i class="fas fa-info-circle"></i> @item.ReservationStatus
+                                                        <i class="fas fa-info-circle"></i>
+                                                        Beklemede
                                                     </span>
                                                 }
                                             </td>
-                                            <td>
-                                                <div class="action-buttons" style="justify-content: center;">
-                                                    <a href="/Reservation/AcceptReservation/@item.ReservationId/" class="modern-btn btn-approve" title="Onayla">
-                                                        <i class="fas fa-check"></i>
-                                                        Onayla
-                                                    </a>
-                                                    <a href="/Reservation/WaitReservation/@item.ReservationId/" class="modern-btn btn-wait" title="Beklet">
-                                                        <i class="fas fa-pause"></i>
-                                                        Beklet
-                                                    </a>
-                                                    <a href="/Reservation/CancelReservation/@item.ReservationId/" class="modern-btn btn-cancel" title="İptal Et">
-                                                        <i class="fas fa-ban"></i>
-                                                        İptal Et
-                                                    </a>
-                                                    <a href="/Reservation/UpdateReservation/@item.ReservationId/" class="modern-btn btn-edit" title="Düzenle">
+                                            <td data-label="İşlemler">
+                                                <div class="action-buttons">
+                                                    <form method="post" action="/Reservation/ApproveReservation/@item.ReservationId" style="display: inline;">
+                                                        <button type="submit" class="modern-btn btn-approve" title="Onayla">
+                                                            <i class="fas fa-check"></i>
+                                                            Onayla
+                                                        </button>
+                                                    </form>
+                                                    <form method="post" action="/Reservation/HoldReservation/@item.ReservationId" style="display: inline;">
+                                                        <button type="submit" class="modern-btn btn-wait" title="Beklet">
+                                                            <i class="fas fa-pause"></i>
+                                                            Beklet
+                                                        </button>
+                                                    </form>
+                                                    <form method="post" action="/Reservation/CancelReservation/@item.ReservationId" style="display: inline;">
+                                                        <button type="submit" class="modern-btn btn-cancel" title="İptal Et">
+                                                            <i class="fas fa-ban"></i>
+                                                            İptal Et
+                                                        </button>
+                                                    </form>
+                                                    <a href="/Reservation/ReservationDetail/@item.ReservationId/" class="modern-btn btn-detail" title="Düzenle">
                                                         <i class="fas fa-edit"></i>
                                                         Düzenle
                                                     </a>
@@ -301,10 +501,10 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer" style="background: white; border-top: 2px solid #f0f0f0;">
-                        <div style="color: #999; font-size: 0.875rem;">
+                    <div class="card-footer-custom">
+                        <div class="footer-info">
                             <i class="fas fa-info-circle"></i>
-                            Toplam <strong style="color: #667eea;">@Model.Count</strong> rezervasyon listelendi
+                            Toplam <strong>@Model.Count</strong> rezervasyon listelendi
                         </div>
                     </div>
                 </div>
@@ -312,4 +512,3 @@
         </div>
     </div>
 </section>
-

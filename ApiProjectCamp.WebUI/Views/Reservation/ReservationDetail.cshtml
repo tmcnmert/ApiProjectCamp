@@ -1,0 +1,427 @@
+﻿@model GetReservationByIdDto
+@{
+    ViewData["Title"] = "ReservationDetail";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .detail-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .detail-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .detail-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        position: relative;
+    }
+
+        .detail-header.approved {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .detail-header.pending {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+        }
+
+        .detail-header.waiting {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .detail-header.cancelled {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .detail-header.completed {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #555;
+        }
+
+    .back-button {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+            color: white;
+        }
+
+    .header-title-section h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .header-title-section p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+
+    .status-badge-large {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        margin-top: 1rem;
+    }
+
+    .reservation-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+        background: #f8f9ff;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .meta-label {
+        font-size: 0.75rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .meta-value {
+        font-size: 1.1rem;
+        color: #333;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .meta-value i {
+            color: #667eea;
+            font-size: 1.3rem;
+        }
+
+    .reservation-content-section {
+        padding: 2rem;
+    }
+
+    .content-title {
+        font-size: 1.3rem;
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .content-title i {
+            color: #667eea;
+        }
+
+    .message-box {
+        background: #f8f9ff;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+        color: #555;
+        line-height: 1.8;
+        font-size: 1rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        padding: 2rem;
+        background: #f8f9ff;
+        border-top: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        flex: 1;
+        min-width: 150px;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .btn-approve {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+    }
+
+    .btn-wait {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        color: white;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-card {
+        background: white;
+        border: 2px solid #e8ecff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .info-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .info-card .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card .card-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card .card-value {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+    @@media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<section class="section detail-container">
+    <div class="detail-card">
+        @{
+            var headerClass = Model.ReservationStatus switch
+            {
+                "Onaylandı" => "approved",
+                "Onay Bekliyor" => "pending",
+                "Beklemede" => "waiting",
+                "İptal Edildi" => "cancelled",
+                "Tamamlandı" => "completed",
+                _ => ""
+            };
+
+            var statusIcon = Model.ReservationStatus switch
+            {
+                "Onaylandı" => "fa-check-circle",
+                "Onay Bekliyor" => "fa-hourglass-half",
+                "Beklemede" => "fa-pause-circle",
+                "İptal Edildi" => "fa-times-circle",
+                "Tamamlandı" => "fa-flag-checkered",
+                "Gelmedi" => "fa-user-slash",
+                _ => "fa-calendar-check"
+            };
+        }
+
+        <div class="detail-header @headerClass">
+            <a href="/Reservation/ReservationList/" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Listeye Dön
+            </a>
+
+            <div class="header-title-section">
+                <h2>
+                    <i class="fas fa-calendar-alt"></i>
+                    Rezervasyon Detayı
+                </h2>
+                <p>
+                    Rezervasyon ID: #@Model.ReservationId
+                </p>
+            </div>
+
+            <span class="status-badge-large">
+                <i class="fas @statusIcon"></i>
+                @Model.ReservationStatus
+            </span>
+        </div>
+
+        <div class="reservation-meta">
+            <div class="meta-item">
+                <span class="meta-label">Müşteri Adı</span>
+                <span class="meta-value">
+                    <i class="fas fa-user-circle"></i>
+                    @Model.NameSurname
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Rezervasyon Tarihi</span>
+                <span class="meta-value">
+                    <i class="fas fa-calendar"></i>
+                    @Model.ReservationDate.ToString("dd MMMM yyyy")
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Saat</span>
+                <span class="meta-value">
+                    <i class="fas fa-clock"></i>
+                    @Model.ReservationTime
+                </span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Kişi Sayısı</span>
+                <span class="meta-value">
+                    <i class="fas fa-users"></i>
+                    @Model.CountofPeople Kişi
+                </span>
+            </div>
+        </div>
+
+        <div class="reservation-content-section">
+            <h3 class="content-title">
+                <i class="fas fa-address-card"></i>
+                İletişim Bilgileri
+            </h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="card-label">E-posta Adresi</div>
+                    <div class="card-value">@Model.Email</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="card-label">Telefon Numarası</div>
+                    <div class="card-value">@Model.PhoneNumber</div>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="reservation-content-section">
+                <h3 class="content-title">
+                    <i class="fas fa-comment-dots"></i>
+                    Özel İstek / Not
+                </h3>
+                <div class="message-box">
+                    @Model.Message
+                </div>
+            </div>
+        }
+
+        <div class="action-buttons">
+            @if (Model.ReservationStatus != "Onaylandı")
+            {
+                <a href="/Reservation/ApproveReservation/@Model.ReservationId/"
+                   class="action-btn btn-approve"
+                   onclick="return confirm('Bu rezervasyonu onaylamak istediğinize emin misiniz?');">
+                    <i class="fas fa-check-circle"></i>
+                    Onayla
+                </a>
+            }
+
+            @if (Model.ReservationStatus != "Beklemede")
+            {
+                <a href="/Reservation/HoldReservation/@Model.ReservationId/"
+                   class="action-btn btn-wait"
+                   onclick="return confirm('Bu rezervasyonu bekletmek istediğinize emin misiniz?');">
+                    <i class="fas fa-pause-circle"></i>
+                    Beklet
+                </a>
+            }
+
+            @if (Model.ReservationStatus != "İptal Edildi")
+            {
+                <a href="/Reservation/CancelReservation/@Model.ReservationId/"
+                   class="action-btn btn-cancel"
+                   onclick="return confirm('Bu rezervasyonu iptal etmek istediğinize emin misiniz?');">
+                    <i class="fas fa-times-circle"></i>
+                    İptal Et
+                </a>
+            }
+
+            <a href="/Reservation/DeleteReservation/@Model.ReservationId/"
+               class="action-btn btn-delete"
+               onclick="return confirm('Bu rezervasyonu kalıcı olarak silmek istediğinize emin misiniz?');">
+                <i class="fas fa-trash-alt"></i>
+                Sil
+            </a>
+        </div>
+    </div>
+</section>

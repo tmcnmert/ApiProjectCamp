@@ -37,7 +37,6 @@
             border-left-color: #764ba2;
         }
 
-        /* Toksik mesajlar için farklı border rengi */
         .message-item.toxic {
             border-left-color: #f5576c;
         }
@@ -47,7 +46,6 @@
                 border-left-color: #e91e63;
             }
 
-        /* Okunmamış mesajlar için bold */
         .message-item.unread .sender-name {
             font-weight: 700;
         }
@@ -70,7 +68,6 @@
         flex-shrink: 0;
     }
 
-    /* Toksik mesajlar için farklı numara arkaplanı */
     .message-item.toxic .message-number {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     }
@@ -113,7 +110,6 @@
         gap: 0.3rem;
     }
 
-    /* Status Badge Stilleri */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -137,6 +133,11 @@
         color: white;
     }
 
+    .status-mesaj-alindi {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #555;
+    }
+
     .status-okundu {
         background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         color: white;
@@ -152,12 +153,7 @@
         color: #8b4513;
     }
 
-    .status-kapandi {
-        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        color: #555;
-    }
-
-    .status-arsivlendi {
+    .status-onay-bekliyor {
         background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
         color: #666;
     }
@@ -205,20 +201,13 @@
         }
 
     .btn-view {
-        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
     }
 
     .btn-delete {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         color: white;
-    }
-
-    .btn-create {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
     }
 
     .empty-state {
@@ -238,12 +227,11 @@
         margin-right: 0.3rem;
     }
 
-    /* Filtre butonları */
     .filter-buttons {
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     .filter-btn {
@@ -273,6 +261,45 @@
             border-color: transparent;
         }
 
+    .stats-row {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .stat-box .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .stat-box.toxic .stat-number {
+            color: #f5576c;
+        }
+
     @@media (max-width: 768px) {
         .message-item {
             grid-template-columns: 1fr;
@@ -292,19 +319,33 @@
                     <div class="card-header" style="background: white; border-bottom: 2px solid #f0f0f0; border-radius: 15px 15px 0 0;">
                         <h4 style="color: #667eea; font-weight: 700; margin: 0;">
                             <i class="fas fa-inbox" style="margin-right: 10px;"></i>
-                            Gelen Mesaj Listesi
+                            Gelen Mesaj Yönetimi
                         </h4>
-                        <div class="card-header-action">
-                            <a href="/Message/CreateMessage/" class="modern-btn btn-create">
-                                <i class="fas fa-plus"></i>
-                                Yeni Mesaj Oluştur
-                            </a>
-                        </div>
                     </div>
                     <div class="card-body" style="padding: 0;">
                         @if (Model.Count > 0)
                         {
                             <div class="messages-container">
+                                <!-- İstatistikler -->
+                                <div class="stats-row">
+                                    <div class="stat-box">
+                                        <span class="stat-number">@Model.Count</span>
+                                        <span class="stat-label">Toplam Mesaj</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <span class="stat-number">@Model.Count(m => m.Status == "Yeni" || !m.IsRead)</span>
+                                        <span class="stat-label">Okunmamış</span>
+                                    </div>
+                                    <div class="stat-box toxic">
+                                        <span class="stat-number">@Model.Count(m => m.Status == "Toksik Mesaj")</span>
+                                        <span class="stat-label">Toksik Mesaj</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <span class="stat-number">@Model.Count(m => m.Status == "Yanıtlandı")</span>
+                                        <span class="stat-label">Yanıtlandı</span>
+                                    </div>
+                                </div>
+
                                 <!-- Filtre Butonları -->
                                 <div class="filter-buttons">
                                     <button class="filter-btn active" data-filter="all">
@@ -313,11 +354,15 @@
                                     </button>
                                     <button class="filter-btn" data-filter="Toksik Mesaj">
                                         <i class="fas fa-exclamation-triangle"></i>
-                                        Toksik Mesajlar (@Model.Count(m => m.Status == "Toksik Mesaj"))
+                                        Toksik (@Model.Count(m => m.Status == "Toksik Mesaj"))
                                     </button>
                                     <button class="filter-btn" data-filter="Yeni">
                                         <i class="fas fa-envelope"></i>
                                         Yeni (@Model.Count(m => m.Status == "Yeni"))
+                                    </button>
+                                    <button class="filter-btn" data-filter="Mesaj Alındı">
+                                        <i class="fas fa-inbox"></i>
+                                        Alındı (@Model.Count(m => m.Status == "Mesaj Alındı"))
                                     </button>
                                     <button class="filter-btn" data-filter="Okundu">
                                         <i class="fas fa-check"></i>
@@ -333,7 +378,7 @@
                                 {
                                     count++;
                                     var isToxic = item.Status == "Toksik Mesaj";
-                                    var isUnread = item.Status == "Yeni" || !item.IsRead;
+                                    var isUnread = item.Status == "Yeni" || item.Status == "Mesaj Alındı" || !item.IsRead;
                                     var statusClass = "";
                                     var statusIcon = "";
 
@@ -347,6 +392,10 @@
                                             statusClass = "status-yeni";
                                             statusIcon = "fa-envelope";
                                             break;
+                                        case "Mesaj Alındı":
+                                            statusClass = "status-mesaj-alindi";
+                                            statusIcon = "fa-inbox";
+                                            break;
                                         case "Okundu":
                                             statusClass = "status-okundu";
                                             statusIcon = "fa-check";
@@ -359,13 +408,9 @@
                                             statusClass = "status-beklemede";
                                             statusIcon = "fa-clock";
                                             break;
-                                        case "Kapandı":
-                                            statusClass = "status-kapandi";
-                                            statusIcon = "fa-times-circle";
-                                            break;
-                                        case "Arşivlendi":
-                                            statusClass = "status-arsivlendi";
-                                            statusIcon = "fa-archive";
+                                        case "Onay Bekliyor":
+                                            statusClass = "status-onay-bekliyor";
+                                            statusIcon = "fa-hourglass-half";
                                             break;
                                         default:
                                             statusClass = "status-yeni";
@@ -385,7 +430,7 @@
                                                     @item.NameSurname
                                                     @if (isUnread)
                                                     {
-                                                        <span style="width: 8px; height: 8px; background: #f5576c; border-radius: 50%; margin-left: 0.3rem;"></span>
+                                                        <span style="width: 8px; height: 8px; background: #f5576c; border-radius: 50%; margin-left: 0.3rem;" title="Okunmadı"></span>
                                                     }
                                                 </div>
                                                 <div class="sender-email">
@@ -394,9 +439,8 @@
                                                 </div>
                                                 <div class="message-date">
                                                     <i class="far fa-calendar-alt"></i>
-                                                    @item.SendDate.ToString("dd MMM yyyy")
+                                                    @item.SendDate.ToString("dd MMM yyyy HH:mm")
                                                 </div>
-                                                <!-- Status Badge -->
                                                 <span class="status-badge @statusClass">
                                                     <i class="fas @statusIcon"></i>
                                                     @item.Status
@@ -443,13 +487,13 @@
                     </div>
                     <div class="card-footer" style="background: white; border-top: 2px solid #f0f0f0;">
                         <div style="color: #999; font-size: 0.875rem;">
-                            <i class="fas fa-info-circle"></i>
-                            Toplam <strong style="color: #667eea;">@Model.Count</strong> mesaj listelendi
+                            <i class="fas fa-shield-alt"></i>
+                            Tüm mesajlar yapay zeka tarafından otomatik olarak kontrol edilmektedir
                             @if (Model.Any(m => m.Status == "Toksik Mesaj"))
                             {
                                 <span style="margin-left: 1rem;">
                                     <i class="fas fa-exclamation-triangle" style="color: #f5576c;"></i>
-                                    <strong style="color: #f5576c;">@Model.Count(m => m.Status == "Toksik Mesaj")</strong> toksik mesaj
+                                    <strong style="color: #f5576c;">@Model.Count(m => m.Status == "Toksik Mesaj")</strong> toksik mesaj tespit edildi
                                 </span>
                             }
                         </div>
@@ -461,7 +505,6 @@
 </section>
 
 <script>
-    // Filtre fonksiyonu
     document.addEventListener('DOMContentLoaded', function() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         const messageItems = document.querySelectorAll('.message-item');
@@ -470,11 +513,9 @@
             button.addEventListener('click', function() {
                 const filter = this.getAttribute('data-filter');
 
-                // Aktif buton stilini güncelle
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
 
-                // Mesajları filtrele
                 messageItems.forEach(item => {
                     if (filter === 'all') {
                         item.style.display = 'grid';

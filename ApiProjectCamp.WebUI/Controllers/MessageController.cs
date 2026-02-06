@@ -354,25 +354,6 @@ namespace ApiProjectCamp.WebUI.Controllers
             return RedirectToAction("MessageDetail", new { id = id });
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> ArchiveMessage(int id)
-        {
-            var success = await UpdateMessageStatus(id, "Arşivlendi", true);
-
-            if (success)
-            {
-                TempData["SuccessMessage"] = "Mesaj arşivlendi.";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Mesaj arşivlenirken bir hata oluştu.";
-            }
-
-            return RedirectToAction("MessageList");
-        }
-
-
         [HttpGet]
         public async Task<IActionResult> MarkAsPending(int id)
         {

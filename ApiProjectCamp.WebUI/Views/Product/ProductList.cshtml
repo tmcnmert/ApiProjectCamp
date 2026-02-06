@@ -153,7 +153,6 @@
                                         <th scope="col" style="width: 25%;">Ürün Adı</th>
                                         <th scope="col" style="width: 15%;">Fiyat</th>
                                         <th scope="col" style="width: 15%;">Kategori</th>
-                                        <th scope="col" style="width: 10%;">Stok</th>
                                         <th scope="col" style="width: 25%;" class="text-center">İşlemler</th>
                                     </tr>
                                 </thead>
@@ -183,17 +182,8 @@
                                                     <i class="fas fa-tag"></i> @item.CategoryName
                                                 </span>
                                             </td>
-                                            <td>
-                                                <span style="background: #fff3cd; color: #856404; padding: 0.3rem 0.7rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
-                                                    <i class="fas fa-cubes"></i> @Random.Shared.Next(10, 100)
-                                                </span>
-                                            </td>
                                             <td class="text-center">
                                                 <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                                    <a href="/Product/ViewProduct/@item.ProductId/" class="modern-btn btn-view" title="Görüntüle">
-                                                        <i class="fas fa-eye"></i>
-                                                        Görüntüle
-                                                    </a>
                                                     <a href="/Product/UpdateProduct/@item.ProductId/" class="modern-btn btn-edit" title="Düzenle">
                                                         <i class="fas fa-edit"></i>
                                                         Düzenle

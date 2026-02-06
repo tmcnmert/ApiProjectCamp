@@ -5,6 +5,7 @@
 }
 
 <style>
+    /* Mevcut stilleri koru, sadece action-buttons kısmını güncelle */
     .detail-container {
         max-width: 900px;
         margin: 0 auto;
@@ -22,7 +23,7 @@
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         padding: 2rem;
-        padding-top: 1rem; /* Üst padding azaltıldı */
+        padding-top: 1rem;
         position: relative;
     }
 
@@ -43,7 +44,7 @@
         align-items: center;
         gap: 0.5rem;
         font-size: 0.9rem;
-        margin-bottom: 1.5rem; /* Alt margin eklendi */
+        margin-bottom: 1.5rem;
     }
 
         .back-button:hover {
@@ -52,7 +53,7 @@
         }
 
     .header-title-section {
-        margin-top: 0.5rem; /* Başlık için üst boşluk */
+        margin-top: 0.5rem;
     }
 
         .header-title-section h2 {
@@ -113,12 +114,12 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        word-break: break-word; /* Uzun metinleri kır */
+        word-break: break-word;
     }
 
         .meta-value i {
             color: #667eea;
-            flex-shrink: 0; /* İkon küçülmesin */
+            flex-shrink: 0;
         }
 
     .message-content-section {
@@ -149,7 +150,7 @@
         font-size: 1rem;
         white-space: pre-wrap;
         word-wrap: break-word;
-        overflow-wrap: break-word; /* Uzun kelimeleri kır */
+        overflow-wrap: break-word;
     }
 
     .toxic-warning {
@@ -192,7 +193,7 @@
 
     .action-btn {
         flex: 1;
-        min-width: 150px; /* Minimum genişlik azaltıldı */
+        min-width: 150px;
         padding: 1rem 1.5rem;
         border-radius: 12px;
         border: none;
@@ -227,7 +228,7 @@
         color: white;
     }
 
-    .btn-archive {
+    .btn-ai-answer {
         background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         color: #8b4513;
     }
@@ -295,29 +296,26 @@
         }
 
     @@media (max-width: 768px) {
-        .detail-header
+        .detail-header {
+            padding: 1.5rem;
+        }
 
-    {
-        padding: 1.5rem;
-    }
+        .header-title-section h2 {
+            font-size: 1.4rem;
+        }
 
-    .header-title-section h2 {
-        font-size: 1.4rem;
-    }
+        .action-buttons {
+            flex-direction: column;
+        }
 
-    .action-buttons {
-        flex-direction: column;
-    }
+        .action-btn {
+            width: 100%;
+            min-width: unset;
+        }
 
-    .action-btn {
-        width: 100%;
-        min-width: unset;
-    }
-
-    .message-meta {
-        grid-template-columns: 1fr;
-    }
-
+        .message-meta {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
@@ -349,7 +347,7 @@
                     "Yanıtlandı" => "fa-reply",
                     "Beklemede" => "fa-clock",
                     "Kapandı" => "fa-times-circle",
-                    "Arşivlendi" => "fa-archive",
+                    "Mesaj Alındı" => "fa-inbox",
                     _ => "fa-info-circle"
                 };
             }
@@ -417,7 +415,7 @@
             </div>
         </div>
 
-        <!-- Aksiyon Butonları -->
+        <!-- Aksiyon Butonları (ARŞİV KALDIRILDI) -->
         <div class="action-buttons">
             @if (Model.Status != "Okundu" && Model.Status != "Yanıtlandı")
             {
@@ -432,9 +430,9 @@
                 Yanıtla
             </button>
 
-            <a href="/Message/ArchiveMessage/@Model.MessageId/" class="action-btn btn-archive">
-                <i class="fas fa-archive"></i>
-                Arşivle
+            <a href="/Message/AnswerMessageWithOpenAI/@Model.MessageId/" class="action-btn btn-ai-answer">
+                <i class="fas fa-robot"></i>
+                AI ile Yanıtla
             </a>
 
             <a href="/Message/DeleteMessage/@Model.MessageId/" class="action-btn btn-delete" onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?');">

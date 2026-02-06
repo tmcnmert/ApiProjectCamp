@@ -1,34 +1,146 @@
-﻿@model List<ResultNotificationDto>
-
+﻿@model List<ResultReservationDto>
 
 <li class="dropdown dropdown-list-toggle">
     <a href="#" data-toggle="dropdown"
        class="nav-link notification-toggle nav-link-lg">
         <i data-feather="bell" class="bell"></i>
+        @if (Model != null && Model.Any())
+        {
+            <span class="badge headerBadge1" style="position: absolute; top: 8px; right: 8px; background: #e74c3c; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px;">
+                @Model.Count
+            </span>
+        }
     </a>
-    <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
-        <div class="dropdown-header">
-            Bildirimler
-            <div class="float-right">
-                <a href="#">Tüm Bildirimler</a>
+    <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown" style="width: 400px;">
+        <div class="dropdown-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px 8px 0 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; font-size: 1rem;">
+                    <i class="fas fa-calendar-check"></i> Yeni Rezervasyonlar
+                </span>
+                <a href="/Reservation/ReservationList" style="color: white; opacity: 0.9; font-size: 0.85rem; text-decoration: none;">
+                    Tümünü Gör →
+                </a>
             </div>
         </div>
-        <div class="dropdown-list-content dropdown-list-icons">
-            @foreach (var item in Model)
+        <div class="dropdown-list-content" style="max-height: 450px; overflow-y: auto; padding: 0;">
+            @if (Model != null && Model.Any())
             {
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                    <span class="dropdown-item-icon bg-primary text-white">
-                        <i class="@item.IconUrl"></i>
-                    </span> <span class="dropdown-item-desc">
-                        @item.Description <span class="time">
-                            @item.NotificationDate.ToString("HH.mm")
-                        </span>
-                    </span>
-                </a>
+                @foreach (var item in Model)
+                {
+                    <div style="padding: 15px; border-bottom: 1px solid #f0f0f0; background: white; transition: all 0.3s ease;" onmouseover="this.style.background='#f8f9ff';" onmouseout="this.style.background='white';">
+                        <!-- Rezervasyon Bilgileri -->
+                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-user" style="color: white; font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
+                                    <strong style="font-size: 0.95rem; color: #2c3e50; display: block;">@item.NameSurname</strong>
+                                    @if (item.ReservationStatus == "Onay Bekliyor" || item.ReservationStatus == "Beklemede")
+                                    {
+                                        <span style="background: #fff3cd; color: #856404; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; white-space: nowrap;">
+                                            Bekliyor
+                                        </span>
+                                    }
+                                    else if (item.ReservationStatus == "Onaylandı")
+                                    {
+                                        <span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; white-space: nowrap;">
+                                            Onaylı
+                                        </span>
+                                    }
+                                    else if (item.ReservationStatus == "İptal Edildi")
+                                    {
+                                        <span style="background: #f8d7da; color: #721c24; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; white-space: nowrap;">
+                                            İptal
+                                        </span>
+                                    }
+                                </div>
+                                <div style="font-size: 0.8rem; color: #7f8c8d; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px;">
+                                    <span>
+                                        <i class="far fa-calendar" style="color: #667eea;"></i> @item.ReservationDate.ToString("dd.MM.yyyy")
+                                    </span>
+                                    <span>
+                                        <i class="far fa-clock" style="color: #667eea;"></i> @item.ReservationTime
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-users" style="color: #667eea;"></i> @item.CountofPeople kişi
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aksiyon Butonları -->
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <form method="post" action="/Reservation/ApproveReservation/@item.ReservationId" style="display: inline; margin: 0;">
+                                <button type="submit" title="Onayla" style="background: #4facfe; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-check"></i> Onayla
+                                </button>
+                            </form>
+
+                            <form method="post" action="/Reservation/HoldReservation/@item.ReservationId" style="display: inline; margin: 0;">
+                                <button type="submit" title="Beklet" style="background: #fda085; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-pause"></i> Beklet
+                                </button>
+                            </form>
+
+                            <form method="post" action="/Reservation/CancelReservation/@item.ReservationId" style="display: inline; margin: 0;">
+                                <button type="submit" title="İptal Et" style="background: #34495e; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-ban"></i> İptal
+                                </button>
+                            </form>
+
+                            <a href="/Reservation/UpdateReservation/@item.ReservationId" title="Düzenle" style="background: #667eea; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div style="text-align: center; padding: 40px 20px; color: #7f8c8d;">
+                    <i class="fas fa-calendar-times" style="font-size: 3rem; color: #e0e0e0; margin-bottom: 15px; display: block;"></i>
+                    <p style="margin: 0; font-size: 0.95rem; font-weight: 600;">Yeni rezervasyon bulunmuyor</p>
+                    <p style="margin: 5px 0 0 0; font-size: 0.85rem;">Tüm rezervasyonlar işlenmiş durumda</p>
+                </div>
             }
         </div>
-        <div class="dropdown-footer text-center">
-            <a href="#">Tümünü Okundu Olarak İşaretle <i class="fas fa-chevron-right"></i></a>
+        <div class="dropdown-footer text-center" style="background: #f8f9ff; padding: 12px; border-top: 2px solid #667eea;">
+            <a href="/Reservation/ReservationList" style="color: #667eea; font-weight: 600; text-decoration: none; font-size: 0.9rem;">
+                Tüm Rezervasyonları Görüntüle <i class="fas fa-chevron-right"></i>
+            </a>
         </div>
     </div>
 </li>
+
+<style>
+
+    .dropdown-list-content form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .dropdown-list-content a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Scrollbar özelleştirme */
+    .dropdown-list-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .dropdown-list-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .dropdown-list-content::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+
+        .dropdown-list-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+</style>

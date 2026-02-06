@@ -1,10 +1,11 @@
 ﻿using ApiProjectCamp.WebUI.Dtos.NotificationDtos;
+using ApiProjectCamp.WebUI.Dtos.ReservationDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace ApiProjectCamp.WebUI.ViewComponents.AdminLayoutNavbarViewComponent
 {
-    public class _NavbarNotificationAdminLayoutComponentPartiel:ViewComponent
+    public class _NavbarNotificationAdminLayoutComponentPartiel : ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -15,17 +16,35 @@ namespace ApiProjectCamp.WebUI.ViewComponents.AdminLayoutNavbarViewComponent
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client=_httpClientFactory.CreateClient("api");
-            var responseMessage = await client.GetAsync("/api/Notifications/");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                var jsonData=await responseMessage.Content.ReadAsStringAsync();
-                var values=JsonConvert.DeserializeObject<List<ResultNotificationDto>>(jsonData);
-                return View(values);
+                var client = _httpClientFactory.CreateClient("api");
+                var responseMessage = await client.GetAsync("api/Reservations");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultReservationDto>>(jsonData);
+
+                    // Son 10 rezervasyonu al - sadece beklemedeki rezervasyonları
+                    var recentReservations = values
+                        .Where(x => x.ReservationStatus == "Onay Bekliyor" || x.ReservationStatus == "Beklemede")
+                        .OrderByDescending(x => x.ReservationDate)
+                        .ThenByDescending(x => x.ReservationTime)
+                        .Take(10)
+                        .ToList();
+
+                    return View(recentReservations);
+                }
             }
-            return View();
+            catch (Exception ex)
+            {
+                // Hata durumunda boş liste döndür
+                Console.WriteLine($"Rezervasyon bildirimleri alınırken hata: {ex.Message}");
+            }
 
-
+            return View(new List<ResultReservationDto>());
         }
     }
 }
+
